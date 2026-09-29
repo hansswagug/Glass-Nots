@@ -4,6 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#f0f2f8">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
 <title>Glass Notes</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -39,6 +42,7 @@
   --dock-h:76px;
   --note-font:inherit;
   --note-size:15px;
+  --app-max:520px;
 }
 body.dark{
   --bg-1:#06070d;--bg-2:#0a0b14;
@@ -53,11 +57,13 @@ body.dark{
 }
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{height:100%}
+html{scroll-behavior:smooth}
 body{
   font-family:'Inter',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
   color:var(--text);
   background:radial-gradient(1200px 800px at 10% -10%, var(--bg-1) 0%, var(--bg-2) 60%, var(--bg-2) 100%);
   min-height:100dvh;overflow-x:hidden;-webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
   transition:background .6s ease,color .35s ease,font-family .4s ease;
 }
 button,input,textarea,select{font-family:inherit;color:inherit}
@@ -65,6 +71,40 @@ button{border:none;background:none;cursor:pointer}
 input,textarea{-webkit-appearance:none;appearance:none}
 ::selection{background:var(--accent-soft)}
 
+/* ============ PERFORMANCE & GPU ============ */
+.note-card, .dock, .sheet-inner, .panel, .profile-strip, .chip,
+.btn-primary, .fab, .ft-btn, .font-chip, .icon-btn, .swatch, .color-swatch,
+.link-btn, .mini-btn, .tabs button, .seg-control button, .zoom-btn, .fp-close{
+  will-change:transform;
+  backface-visibility:hidden;
+  -webkit-backface-visibility:hidden;
+}
+.note-card-wrap{
+  content-visibility:auto;
+  contain-intrinsic-size:auto 180px;
+}
+.orbs{content-visibility:auto}
+.app, .sheet-body, .chips, .font-scroll, .format-tools-row, .notes, .letter-notes{
+  scroll-behavior:smooth;
+  -webkit-overflow-scrolling:touch;
+}
+.view.active{animation:viewIn .6s cubic-bezier(.16,1,.3,1)}
+
+/* Reduce blur cost on small/mid devices */
+@media (max-width: 640px){
+  :root{--glass-blur:16px}
+}
+@media (prefers-reduced-motion: reduce){
+  *, *::before, *::after{
+    animation-duration:.01ms !important;
+    animation-iteration-count:1 !important;
+    transition-duration:.01ms !important;
+    scroll-behavior:auto !important;
+  }
+  .orbs .orb{animation:none !important; opacity:.25}
+}
+
+/* ============ BACKGROUND ============ */
 .orbs{position:fixed;inset:0;overflow:hidden;z-index:0;pointer-events:none}
 .orb{position:absolute;border-radius:50%;filter:blur(90px);opacity:.5;will-change:transform}
 .o1{width:440px;height:440px;background:var(--accent);top:-160px;left:-130px;animation:float1 22s ease-in-out infinite}
@@ -75,23 +115,18 @@ body:not(.dark) .o2{opacity:.3}
 body:not(.dark) .o3{opacity:.25}
 @keyframes float1{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(50px,-60px) scale(1.12)}66%{transform:translate(-40px,40px) scale(.94)}}
 @keyframes float2{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(-60px,-40px) scale(1.15)}}
+@media (max-width: 640px){
+  .orb{filter:blur(60px)}
+  .o1{width:320px;height:320px}
+  .o2{width:300px;height:300px}
+  .o3{width:280px;height:280px}
+}
 ::-webkit-scrollbar{width:0;height:0}
-
-.note-card, .dock, .sheet-inner, .panel, .profile-strip, .chip, .btn-primary, .fab, .ft-btn, .font-chip, .icon-btn, .swatch, .color-swatch, .link-btn, .mini-btn, .tabs button, .seg-control button, .zoom-btn, .fp-close{
-  will-change:transform;
-  backface-visibility:hidden;
-  -webkit-backface-visibility:hidden;
-}
-.app, .sheet-body, .chips, .font-scroll, .format-tools-row, .notes, .letter-notes{
-  scroll-behavior:smooth;
-  -webkit-overflow-scrolling:touch;
-}
-html{scroll-behavior:smooth}
-.view.active{animation:viewIn .6s cubic-bezier(.16,1,.3,1)}
 
 /* ============ AUTH ============ */
 .auth{position:fixed;inset:0;z-index:200;display:grid;place-items:center;padding:22px;
-  transition:opacity .6s ease,transform .6s ease,visibility .6s}
+  transition:opacity .6s ease,transform .6s ease,visibility .6s;
+  overflow-y:auto}
 .auth.hide{opacity:0;visibility:hidden;transform:scale(1.06);pointer-events:none}
 .auth-card{
   position:relative;
@@ -102,6 +137,7 @@ html{scroll-behavior:smooth}
   -webkit-backdrop-filter:blur(var(--glass-blur)) saturate(180%);
   box-shadow:var(--shadow-lg),var(--inner-light);
   animation:authIn .8s cubic-bezier(.2,.9,.2,1);
+  margin:auto;
 }
 @keyframes authIn{from{opacity:0;transform:translateY(40px) scale(.94)}to{opacity:1;transform:none}}
 .skip-btn{
@@ -143,6 +179,95 @@ html{scroll-behavior:smooth}
 .field input:focus{background:var(--glass-2);border-color:var(--stroke-2);
   box-shadow:0 0 0 4px var(--accent-soft)}
 .field.hidden{display:none}
+
+/* ============ TERMS & PRIVACY ============ */
+.terms-row{
+  margin:4px 0 14px;
+  padding:13px 15px;
+  border-radius:var(--r-sm);
+  background:var(--glass);
+  border:1px solid var(--stroke);
+  transition:background .3s, border-color .3s, opacity .3s, max-height .45s, padding .45s;
+  max-height:120px;
+  overflow:hidden;
+}
+.terms-row.hidden{
+  max-height:0;
+  padding-top:0;
+  padding-bottom:0;
+  margin-top:0;
+  margin-bottom:0;
+  opacity:0;
+  border-color:transparent;
+  pointer-events:none;
+}
+.terms-label{
+  display:flex;
+  align-items:flex-start;
+  gap:11px;
+  cursor:pointer;
+  user-select:none;
+  -webkit-user-select:none;
+}
+.terms-checkbox{
+  position:relative;
+  flex:0 0 auto;
+  width:22px;height:22px;
+  margin-top:1px;
+  cursor:pointer;
+}
+.terms-checkbox input{
+  position:absolute;
+  opacity:0;
+  width:100%;height:100%;
+  margin:0;
+  cursor:pointer;
+  z-index:2;
+}
+.terms-checkbox .box{
+  display:block;
+  width:22px;height:22px;
+  border-radius:7px;
+  background:var(--glass-2);
+  border:1.5px solid var(--stroke-2);
+  transition:all .3s cubic-bezier(.34,1.5,.64,1);
+  position:relative;
+}
+.terms-checkbox .box::after{
+  content:'';
+  position:absolute;
+  left:7px;top:3px;
+  width:5px;height:10px;
+  border:solid #fff;
+  border-width:0 2.4px 2.4px 0;
+  transform:rotate(45deg) scale(0);
+  transition:transform .3s cubic-bezier(.34,1.5,.64,1);
+  transform-origin:center;
+}
+.terms-checkbox input:checked + .box{
+  background:linear-gradient(135deg,var(--accent),var(--accent-2));
+  border-color:transparent;
+  box-shadow:0 6px 16px var(--accent-ring);
+}
+.terms-checkbox input:checked + .box::after{
+  transform:rotate(45deg) scale(1);
+}
+.terms-text{
+  font-size:12.5px;
+  line-height:1.6;
+  color:var(--text-muted);
+  font-weight:500;
+}
+.terms-text a{
+  color:var(--accent);
+  font-weight:700;
+  text-decoration:none;
+  border-bottom:1px dashed rgba(107,92,255,.4);
+  transition:color .3s, border-color .3s;
+  cursor:pointer;
+}
+.terms-text a:hover{color:var(--accent-2);border-color:var(--accent-2)}
+
 .err{min-height:18px;font-size:12.5px;color:var(--danger);text-align:center;margin-bottom:6px;
   opacity:0;transform:translateY(-4px);transition:.3s;font-weight:500}
 .err.show{opacity:1;transform:none}
@@ -178,25 +303,50 @@ html{scroll-behavior:smooth}
 .viewonly-bar .vo-ico svg{width:16px;height:16px}
 .viewonly-bar .vo-txt{flex:1;min-width:0}
 .viewonly-bar .vo-txt b{display:block;font-size:12.5px;font-weight:700}
-.viewonly-bar .vo-txt span{display:block;font-size:11px;color:var(--text-muted);margin-top:1px}
+.viewonly-bar .vo-txt span{display:block;font-size:11px;color:var(--text-muted);margin-top:1px;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .viewonly-bar .vo-btn{
   padding:9px 16px;border-radius:12px;font-size:12px;font-weight:700;color:#fff;
   background:linear-gradient(135deg,var(--accent),var(--accent-2));
   box-shadow:0 8px 20px var(--accent-ring),inset 0 1px 0 rgba(255,255,255,.3);
   transition:transform .25s,filter .25s;
+  flex:0 0 auto;
 }
 .viewonly-bar .vo-btn:hover{filter:brightness(1.1)}
 .viewonly-bar .vo-btn:active{transform:scale(.95)}
 
 /* ============ APP ============ */
-.app{position:relative;z-index:1;max-width:520px;margin:0 auto;
+.app{position:relative;z-index:1;max-width:var(--app-max);margin:0 auto;
   padding:28px 18px calc(var(--dock-h) + 60px);min-height:100dvh;
-  transition:filter .5s ease}
+  transition:max-width .3s ease}
 .app.hidden{display:none}
 body.viewonly .app{padding-top:78px}
 .view{display:none}
 .view.active{display:block}
 @keyframes viewIn{from{opacity:0;transform:translateY(22px) scale(.985)}to{opacity:1;transform:none}}
+
+/* ============ RESPONSIVE BREAKPOINTS ============ */
+@media (min-width: 640px){
+  :root{--app-max:640px}
+  .notes{grid-template-columns:repeat(4, 1fr)}
+  .letter-notes{grid-template-columns:repeat(4, 1fr)}
+}
+@media (min-width: 900px){
+  :root{--app-max:780px}
+  .notes{grid-template-columns:repeat(5, 1fr)}
+  .letter-notes{grid-template-columns:repeat(5, 1fr)}
+}
+@media (min-width: 1200px){
+  :root{--app-max:920px}
+  .notes{grid-template-columns:repeat(6, 1fr)}
+  .letter-notes{grid-template-columns:repeat(6, 1fr)}
+}
+@media (max-width: 380px){
+  .app{padding:22px 14px calc(var(--dock-h) + 50px)}
+  .h1{font-size:26px}
+  .notes{gap:10px 8px}
+  .nc-title-below{font-size:9.5px}
+}
 
 .hero{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:6px}
 .hi{font-size:13px;color:var(--text-muted);font-weight:500}
@@ -533,10 +683,10 @@ body.dark .sheet{background:rgba(5,6,12,.55)}
 .sheet-head .mid{flex:1;text-align:center;font-size:12px;font-weight:700;letter-spacing:.6px;
   color:var(--text-muted);text-transform:uppercase}
 
-/* ============ FORMAT PANEL — compact, wide, under the pen button ============ */
+/* ============ FORMAT PANEL ============ */
 .format-panel{
   position:absolute;
-  top:78px;                /* just below the header */
+  top:78px;
   left:12px;
   right:12px;
   max-height:60%;
@@ -564,7 +714,6 @@ body.dark .format-panel{
   opacity:1;
   visibility:visible;
 }
-
 .format-panel-head{
   display:flex;align-items:center;justify-content:space-between;
   padding:10px 14px 4px;
@@ -586,7 +735,6 @@ body.dark .format-panel{
 .fp-close:active{transform:scale(.9)}
 .fp-close svg{width:12px;height:12px}
 
-/* Horizontal tools row — compact */
 .format-tools-row{
   display:flex;
   align-items:center;
@@ -628,7 +776,6 @@ body.dark .format-panel{
 .ft-btn small{font-size:10px;font-weight:700;letter-spacing:.2px;opacity:.85}
 .ft-btn b,.ft-btn i,.ft-btn u,.ft-btn s{font-size:15px;line-height:1}
 
-/* Links button */
 .ft-btn.link-btn{
   color:#2563eb;
   background:linear-gradient(160deg, rgba(255,255,255,.96), rgba(255,255,255,.82));
@@ -652,7 +799,6 @@ body.dark .ft-btn.link-btn:hover{
 
 .ft-sep{flex:0 0 auto;width:1px;height:22px;background:var(--stroke-2);margin:0 2px}
 
-/* Zoom group inside tools row */
 .zoom-group{
   display:inline-flex;
   align-items:center;
@@ -687,7 +833,6 @@ body.dark .ft-btn.link-btn:hover{
   letter-spacing:.2px;
 }
 
-/* Sub-sections (color/font) that open BELOW the tools row */
 .format-section{
   max-height:0;
   overflow:hidden;
@@ -828,6 +973,65 @@ body.dark .link-modal-head .lm-ico{color:#7cb3ff;background:rgba(96,165,250,.15)
 .link-modal-actions .lm-insert:hover{filter:brightness(1.08)}
 .link-modal-actions button:active{transform:scale(.97)}
 
+/* ============ TERMS MODAL ============ */
+.terms-modal{
+  position:fixed;inset:0;z-index:190;
+  opacity:0;visibility:hidden;
+  background:rgba(15,15,30,.4);
+  backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+  transition:opacity .35s,visibility .35s;
+  display:flex;align-items:center;justify-content:center;padding:20px;
+}
+body.dark .terms-modal{background:rgba(5,6,12,.6)}
+.terms-modal.open{opacity:1;visibility:visible}
+.terms-modal-inner{
+  width:100%;max-width:480px;max-height:82dvh;
+  display:flex;flex-direction:column;
+  border-radius:var(--r-lg);
+  background:linear-gradient(180deg,var(--glass-3),var(--glass-2));
+  border:1px solid var(--stroke-2);
+  backdrop-filter:blur(30px) saturate(170%);
+  -webkit-backdrop-filter:blur(30px) saturate(170%);
+  box-shadow:var(--shadow-lg);
+  transform:scale(.94);
+  transition:transform .45s cubic-bezier(.2,.9,.2,1);
+  overflow:hidden;
+}
+.terms-modal.open .terms-modal-inner{transform:scale(1)}
+.terms-modal-head{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:18px 20px 14px;border-bottom:1px solid var(--stroke);
+  flex:0 0 auto;
+}
+.terms-modal-head h3{font-size:16px;font-weight:800;letter-spacing:-.2px}
+.terms-modal-head button{
+  width:34px;height:34px;border-radius:50%;
+  display:grid;place-items:center;color:var(--text);
+  background:var(--glass);border:1px solid var(--stroke);
+  transition:.25s;
+}
+.terms-modal-head button:hover{background:var(--glass-2)}
+.terms-modal-head button:active{transform:scale(.9)}
+.terms-modal-head svg{width:15px;height:15px}
+.terms-modal-body{
+  padding:20px;overflow-y:auto;flex:1;
+  font-size:13.5px;line-height:1.75;color:var(--text-muted);
+  -webkit-overflow-scrolling:touch;
+}
+.terms-modal-body h4{
+  font-size:13.5px;font-weight:800;color:var(--text);
+  margin:16px 0 6px;letter-spacing:-.1px;
+}
+.terms-modal-body h4:first-child{margin-top:0}
+.terms-modal-body p{margin-bottom:10px}
+.terms-modal-body ul{margin:8px 0 12px 20px}
+.terms-modal-body li{margin-bottom:5px}
+.terms-modal-foot{
+  padding:14px 20px calc(16px + env(safe-area-inset-bottom));
+  border-top:1px solid var(--stroke);
+  display:flex;gap:10px;flex:0 0 auto;
+}
+
 /* ============ PROFILE FORM ============ */
 .pf-avatar-wrap{display:flex;flex-direction:column;align-items:center;margin-bottom:24px}
 .pf-avatar{width:104px;height:104px;border-radius:50%;display:grid;place-items:center;
@@ -917,10 +1121,44 @@ body.dark .mini-btn.restore{color:#6ee7b7}
       <div class="field"><input id="fUser" placeholder="Username" autocomplete="username" spellcheck="false"></div>
       <div class="field hidden" id="emailField"><input id="fEmail" type="email" placeholder="Email" autocomplete="email" spellcheck="false"></div>
       <div class="field"><input id="fPass" type="password" placeholder="Password" autocomplete="current-password"></div>
+
+      <!-- TERMS & PRIVACY -->
+      <div class="terms-row hidden" id="termsRow">
+        <label class="terms-label">
+          <span class="terms-checkbox">
+            <input type="checkbox" id="fTerms">
+            <span class="box"></span>
+          </span>
+          <span class="terms-text">
+            I agree to the
+            <a href="#" id="termsLink">Terms of Service</a>
+            and
+            <a href="#" id="privacyLink">Privacy Policy</a>.
+            My data stays on this device.
+          </span>
+        </label>
+      </div>
+
       <div class="err" id="authErr"></div>
       <button class="btn-primary" type="submit" id="authBtn">Login</button>
     </form>
     <p class="auth-note">Your notes are stored locally on this device.<br>You must be signed in to continue.</p>
+  </div>
+</div>
+
+<!-- TERMS / PRIVACY MODAL -->
+<div class="terms-modal" id="termsModal">
+  <div class="terms-modal-inner">
+    <div class="terms-modal-head">
+      <h3 id="termsModalTitle">Terms of Service</h3>
+      <button type="button" id="termsModalClose" aria-label="Close">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+    </div>
+    <div class="terms-modal-body" id="termsModalBody"></div>
+    <div class="terms-modal-foot">
+      <button class="btn-primary" id="termsModalOk" type="button">Got it</button>
+    </div>
   </div>
 </div>
 
@@ -1140,7 +1378,7 @@ body.dark .mini-btn.restore{color:#6ee7b7}
             <circle cx="12" cy="12" r="9"/><path d="M12 16v-4M12 8h.01"/>
           </svg>
         </div>
-        <div class="row-txt"><h4>Glass Notes</h4><p>Version 1.5 · Offline and private</p></div>
+        <div class="row-txt"><h4>Glass Notes</h4><p>Version 1.6 · Offline and private</p></div>
       </div>
     </div>
   </section>
@@ -1201,7 +1439,6 @@ body.dark .mini-btn.restore{color:#6ee7b7}
       </button>
     </div>
 
-    <!-- FORMAT PANEL — compact, wide, drops down under the format button -->
     <div class="format-panel" id="formatPanel">
       <div class="format-panel-head">
         <h4>Format</h4>
@@ -1285,13 +1522,11 @@ body.dark .mini-btn.restore{color:#6ee7b7}
         </div>
       </div>
 
-      <!-- Sub-section: Font (opens below the tools row) -->
       <div class="format-section" id="fontSection">
         <div class="format-section-head">Font</div>
         <div class="font-scroll" id="fontRow"></div>
       </div>
 
-      <!-- Sub-section: Color (opens below the tools row) -->
       <div class="format-section" id="colorSection">
         <div class="format-section-head" id="colorSectionTitle">Text Color</div>
         <div class="color-grid" id="colorGrid"></div>
@@ -1388,6 +1623,33 @@ function save(k, v){
   catch(e){ console.warn('Storage error', e); return false; }
 }
 
+/* ================= DEVICE FINGERPRINT ================= */
+function getDeviceId(){
+  try {
+    var parts = [
+      navigator.userAgent || '',
+      navigator.language || '',
+      (screen.width || 0) + 'x' + (screen.height || 0),
+      (screen.colorDepth || 0).toString(),
+      new Date().getTimezoneOffset().toString(),
+      (navigator.hardwareConcurrency || '0'),
+      (navigator.platform || '')
+    ];
+    var s = parts.join('|');
+    var h = 5381;
+    for (var i = 0; i < s.length; i++) h = ((h << 5) + h + s.charCodeAt(i)) >>> 0;
+    return 'd' + h.toString(36);
+  } catch(e){ return 'd0'; }
+}
+function getDeviceInfo(){
+  return {
+    ua: (navigator.userAgent || '').slice(0, 160),
+    lang: navigator.language || '',
+    screen: (screen.width || 0) + 'x' + (screen.height || 0),
+    tz: new Date().getTimezoneOffset()
+  };
+}
+
 /* ================= HELPERS ================= */
 function $(s){ return document.querySelector(s); }
 function $$(s){ return Array.prototype.slice.call(document.querySelectorAll(s)); }
@@ -1453,6 +1715,14 @@ function normalizeUrl(raw){
   }
   return u;
 }
+function debounce(fn, wait){
+  var t;
+  return function(){
+    var args = arguments, ctx = this;
+    clearTimeout(t);
+    t = setTimeout(function(){ fn.apply(ctx, args); }, wait);
+  };
+}
 
 /* ================= FONTS ================= */
 var FONT_LIST = [
@@ -1483,6 +1753,38 @@ function getFontStack(name){
   }
   return FONT_LIST[0].stack;
 }
+
+/* ================= TERMS CONTENT ================= */
+var TERMS_TEXT = '' +
+  '<h4>1. Acceptance</h4>' +
+  '<p>By creating an account you agree to use Glass Notes responsibly and lawfully. This app stores your notes locally on your own device.</p>' +
+  '<h4>2. Your Content</h4>' +
+  '<p>All notes, titles, and content you create belong to you. We do not upload, transmit, or sell your data. Everything stays in your browser storage.</p>' +
+  '<h4>3. Account</h4>' +
+  '<p>You are responsible for keeping your password safe. If you lose access to your device without exporting a backup, your notes cannot be recovered.</p>' +
+  '<h4>4. No Warranty</h4>' +
+  '<p>Glass Notes is provided "as is" without any warranty. We are not responsible for any data loss. Please use Export regularly to back up your notes.</p>' +
+  '<h4>5. Changes</h4>' +
+  '<p>These terms may be updated in future versions. Continued use means you accept the updated terms.</p>';
+
+var PRIVACY_TEXT = '' +
+  '<h4>Your Privacy Matters</h4>' +
+  '<p>Glass Notes is designed to be private by default. Here is exactly what happens with your data:</p>' +
+  '<h4>What we store</h4>' +
+  '<ul>' +
+  '<li>Your username and a secure hash of your password</li>' +
+  '<li>Your notes, titles, and formatting</li>' +
+  '<li>Your display preferences (theme, font, accent color)</li>' +
+  '<li>A device fingerprint to keep you signed in</li>' +
+  '</ul>' +
+  '<h4>Where it is stored</h4>' +
+  '<p>Everything is stored in your browser\'s <b>localStorage</b> on this exact device. Nothing is uploaded to a server. Nothing is shared with anyone.</p>' +
+  '<h4>Device recognition</h4>' +
+  '<p>A short anonymous fingerprint (your browser type, screen size, language) is saved to keep your session alive. It contains no personal information and cannot identify you elsewhere.</p>' +
+  '<h4>No trackers</h4>' +
+  '<p>There are no analytics, no ads, no cookies, and no third-party scripts. Your data never leaves your device.</p>' +
+  '<h4>Your control</h4>' +
+  '<p>You can export your notes at any time, and clearing your browser data will erase everything permanently.</p>';
 
 /* ================= STATE ================= */
 var state = {
@@ -1653,6 +1955,12 @@ function applyStyle(){
   }
   document.body.classList.toggle('dark', effective === 'dark');
 
+  /* update meta theme-color for mobile browsers */
+  var metaTheme = document.querySelector('meta[name="theme-color"]');
+  if (metaTheme){
+    metaTheme.setAttribute('content', effective === 'dark' ? '#06070d' : '#eef1f8');
+  }
+
   $$('#themeSeg button').forEach(function(b){ b.classList.toggle('active', b.dataset.mode === s.theme); });
   $$('#swatches .swatch').forEach(function(el){ el.classList.toggle('active', el.dataset.color === s.accent); });
 
@@ -1698,6 +2006,27 @@ try {
   }
 } catch(e){}
 
+/* ================= TERMS MODAL ================= */
+function openTermsModal(kind){
+  var modal = $('#termsModal');
+  var title = $('#termsModalTitle');
+  var body = $('#termsModalBody');
+  if (!modal) return;
+  if (kind === 'privacy'){
+    if (title) title.textContent = 'Privacy Policy';
+    if (body) body.innerHTML = PRIVACY_TEXT;
+  } else {
+    if (title) title.textContent = 'Terms of Service';
+    if (body) body.innerHTML = TERMS_TEXT;
+  }
+  modal.classList.add('open');
+}
+function closeTermsModal(){
+  var modal = $('#termsModal');
+  if (!modal) return;
+  modal.classList.remove('open');
+}
+
 /* ================= AUTH ================= */
 var authMode = 'login';
 var authDebounce = 0;
@@ -1719,6 +2048,8 @@ function initTabs(){
       positionTabPill();
       var ef = $('#emailField');
       if (ef) ef.classList.toggle('hidden', authMode !== 'signup');
+      var tr = $('#termsRow');
+      if (tr) tr.classList.toggle('hidden', authMode !== 'signup');
       var ab = $('#authBtn');
       if (ab) ab.textContent = authMode === 'signup' ? 'Create Account' : 'Login';
       var fp = $('#fPass');
@@ -1728,7 +2059,7 @@ function initTabs(){
   });
   requestAnimationFrame(positionTabPill);
   window.addEventListener('load', positionTabPill);
-  window.addEventListener('resize', positionTabPill);
+  window.addEventListener('resize', debounce(positionTabPill, 120));
 }
 function showErr(msg){
   var el = $('#authErr');
@@ -1742,19 +2073,25 @@ function handleAuthSubmit(){
   authDebounce = now;
   try {
     showErr('');
-    var uEl = $('#fUser'), pEl = $('#fPass'), eEl = $('#fEmail');
+    var uEl = $('#fUser'), pEl = $('#fPass'), eEl = $('#fEmail'), tEl = $('#fTerms');
     var u  = (uEl && uEl.value || '').trim();
     var p  = (pEl && pEl.value || '');
     var em = (eEl && eEl.value || '').trim();
+    var agreed = tEl ? !!tEl.checked : false;
+
     if (!u) return showErr('Please enter a username.');
     if (!p) return showErr('Please enter a password.');
     if (u.length < 3) return showErr('Username must be at least 3 characters.');
     if (p.length < 4) return showErr('Password must be at least 4 characters.');
+
     var users = load(K_USERS, {});
     var key = u.toLowerCase();
+
     if (authMode === 'signup'){
       if (users[key]) return showErr('That username is already taken.');
       if (em && !/^\S+@\S+\.\S+$/.test(em)) return showErr('Please enter a valid email address.');
+      if (!agreed) return showErr('Please accept the Terms and Privacy Policy.');
+
       users[key] = {
         username: u, displayName: u, email: em, bio: '', avatar: '',
         pass: hash(p), created: Date.now()
@@ -1780,7 +2117,15 @@ function loginAs(key, isNew){
   state.userKey = key;
   state.user = u;
   state.notes = load(K_NOTES(key), []);
-  save(K_SESSION, { user: key, at: Date.now() });
+
+  /* Save session with device fingerprint for reliable auto-login */
+  save(K_SESSION, {
+    user: key,
+    at: Date.now(),
+    device: getDeviceId(),
+    info: getDeviceInfo()
+  });
+
   document.body.classList.remove('viewonly');
   var voBar = $('#viewonlyBar'); if (voBar) voBar.classList.remove('show');
   var authScr = $('#authScreen'); if (authScr) authScr.classList.add('hide');
@@ -1843,10 +2188,12 @@ function logout(){
   authMode = 'login';
   $$('.tabs button').forEach(function(b, i){ b.classList.toggle('active', i === 0); });
   var ef = $('#emailField'); if (ef) ef.classList.add('hidden');
+  var tr = $('#termsRow'); if (tr) tr.classList.add('hidden');
   var ab = $('#authBtn'); if (ab) ab.textContent = 'Login';
   var fu = $('#fUser'); if (fu) fu.value = '';
   var fp = $('#fPass'); if (fp) fp.value = '';
   var fe = $('#fEmail'); if (fe) fe.value = '';
+  var ft = $('#fTerms'); if (ft) ft.checked = false;
   showErr('');
   requestAnimationFrame(positionTabPill);
   setTimeout(function(){ try { $('#fUser').focus(); } catch(e){} }, 400);
@@ -2088,12 +2435,10 @@ function openEditor(id){
   updateEditorPlaceholder();
   applyEditorZoom();
 
-  /* reset format panel */
   var fp = $('#formatPanel'); if (fp) fp.classList.remove('open');
   var fpBtn = $('#edFormat'); if (fpBtn) fpBtn.classList.remove('active');
   closeAllSections();
 
-  /* reflect lines state */
   var lb = document.querySelector('.ft-btn[data-cmd="toggleLines"]');
   if (lb) lb.classList.toggle('on', !!state.style.lined);
 
@@ -2280,14 +2625,12 @@ function wireFormatBar(){
   });
 
   fp.addEventListener('click', function(e){
-    /* Close button */
     if (e.target.closest('#fpClose')){
       e.preventDefault();
       toggleFormatBar();
       return;
     }
 
-    /* Command buttons */
     var btn = e.target.closest('[data-cmd]');
     if (!btn) return;
     var cmd = btn.dataset.cmd;
@@ -2306,7 +2649,7 @@ function wireFormatBar(){
     }
     if (cmd === 'addLineAbove'){ addLineAbove(); return; }
     if (cmd === 'removeFormat'){
-      execCmd('removeFormat');
+      execCommand('removeFormat');
       execCmd('foreColor', state.style.theme === 'dark' ? '#eaeefb' : '#181a2e');
       return;
     }
@@ -2318,8 +2661,12 @@ function wireFormatBar(){
     if (esh && esh.classList.contains('open')) updateFmtButtons();
   });
 }
+function execCommand(cmd){ try { document.execCommand(cmd, false, null); } catch(e){} }
 
 /* ================= SEARCH ================= */
+var searchDebounce = debounce(function(){
+  renderSearch();
+}, 120);
 function renderSearch(){
   var box = $('#searchResults');
   if (!box) return;
@@ -2565,11 +2912,11 @@ function init(){
       });
     }
     var rs = $('#radiusSlider');
-    if (rs) rs.addEventListener('input', function(e){ updateStyle({ radius: +e.target.value }); });
+    if (rs) rs.addEventListener('input', debounce(function(e){ updateStyle({ radius: +e.target.value }); }, 60));
     var bs = $('#blurSlider');
-    if (bs) bs.addEventListener('input', function(e){ updateStyle({ blur: +e.target.value }); });
+    if (bs) bs.addEventListener('input', debounce(function(e){ updateStyle({ blur: +e.target.value }); }, 60));
     var nss = $('#noteSizeSlider');
-    if (nss) nss.addEventListener('input', function(e){ updateStyle({ noteSize: +e.target.value }); });
+    if (nss) nss.addEventListener('input', debounce(function(e){ updateStyle({ noteSize: +e.target.value }); }, 60));
 
     /* auth */
     initTabs();
@@ -2587,6 +2934,18 @@ function init(){
         if (authForm){ e.preventDefault(); handleAuthSubmit(); }
       });
     }
+
+    /* Terms & Privacy links */
+    var tl = $('#termsLink');
+    if (tl) tl.addEventListener('click', function(e){ e.preventDefault(); openTermsModal('terms'); });
+    var pl = $('#privacyLink');
+    if (pl) pl.addEventListener('click', function(e){ e.preventDefault(); openTermsModal('privacy'); });
+    var tmClose = $('#termsModalClose');
+    if (tmClose) tmClose.addEventListener('click', closeTermsModal);
+    var tmOk = $('#termsModalOk');
+    if (tmOk) tmOk.addEventListener('click', closeTermsModal);
+    var tmEl = $('#termsModal');
+    if (tmEl) tmEl.addEventListener('click', function(e){ if (e.target === tmEl) closeTermsModal(); });
 
     /* skip / view-only */
     var skipBtn = $('#skipBtn');
@@ -2607,9 +2966,12 @@ function init(){
     $$('.dock button').forEach(function(b){
       b.addEventListener('click', function(){ switchView(b.dataset.view); });
     });
-    window.addEventListener('resize', function(){
+    window.addEventListener('resize', debounce(function(){
       positionDockPill(true);
       positionTabPill();
+    }, 120));
+    window.addEventListener('orientationchange', function(){
+      setTimeout(function(){ positionDockPill(true); positionTabPill(); }, 250);
     });
 
     /* new note */
@@ -2633,7 +2995,7 @@ function init(){
     var si = $('#searchInput');
     if (si) si.addEventListener('input', function(e){
       state.searchQuery = e.target.value.trim();
-      renderSearch();
+      searchDebounce();
     });
 
     /* selection */
@@ -2652,9 +3014,9 @@ function init(){
     });
 
     /* trash */
-    var tl = $('#trashList');
-    if (tl){
-      tl.addEventListener('click', function(e){
+    var tl2 = $('#trashList');
+    if (tl2){
+      tl2.addEventListener('click', function(e){
         if (state.viewOnly){ requireAuth('manage your trash'); return; }
         var r = e.target.closest('[data-restore]');
         var k = e.target.closest('[data-kill]');
@@ -2707,7 +3069,7 @@ function init(){
     /* editor content */
     var eb = $('#edBody');
     if (eb){
-      eb.addEventListener('input', updateEditorPlaceholder);
+      eb.addEventListener('input', debounce(updateEditorPlaceholder, 100));
       eb.addEventListener('blur', updateEditorPlaceholder);
       eb.addEventListener('focus', updateEditorPlaceholder);
       eb.addEventListener('paste', function(e){
@@ -2759,7 +3121,7 @@ function init(){
     var zi = $('#zoomIn'); if (zi) zi.addEventListener('click', function(){ stepZoom(10); });
     var zo = $('#zoomOut'); if (zo) zo.addEventListener('click', function(){ stepZoom(-10); });
 
-    /* pinch-to-zoom on editor */
+    /* pinch-to-zoom */
     (function(){
       var editor = $('#edBody');
       if (!editor) return;
@@ -2877,7 +3239,8 @@ function init(){
         if (state.editingId) closeEditor();
       }
       if (e.key === 'Escape'){
-        if ($('#linkModal').classList.contains('open')) closeLinkModal();
+        if ($('#termsModal').classList.contains('open')) closeTermsModal();
+        else if ($('#linkModal').classList.contains('open')) closeLinkModal();
         else if ($('#formatPanel').classList.contains('open')) toggleFormatBar();
         else if (state.editingId) closeEditor();
         else if (state.selectionMode) exitSelection();
@@ -2885,7 +3248,7 @@ function init(){
       }
     });
 
-    /* auto-save */
+    /* auto-save on hide */
     document.addEventListener('visibilitychange', function(){
       if (document.hidden && state.editingId){
         var note = state.notes.find(function(n){ return n.id === state.editingId; });
@@ -2903,10 +3266,11 @@ function init(){
     var sx = 0, sy = 0, tracking = false;
     document.addEventListener('touchstart', function(e){
       if (e.touches.length !== 1) return;
-      var esh = $('#editorSheet'), psh = $('#profileSheet'), lmk = $('#linkModal');
+      var esh = $('#editorSheet'), psh = $('#profileSheet'), lmk = $('#linkModal'), tmk = $('#termsModal');
       if ((esh && esh.classList.contains('open')) ||
           (psh && psh.classList.contains('open')) ||
-          (lmk && lmk.classList.contains('open'))) return;
+          (lmk && lmk.classList.contains('open')) ||
+          (tmk && tmk.classList.contains('open'))) return;
       sx = e.touches[0].clientX; sy = e.touches[0].clientY;
       tracking = true;
     }, { passive: true });
