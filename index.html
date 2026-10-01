@@ -363,6 +363,31 @@ body.viewonly .app{padding-top:78px}
 .note-card:hover{transform:translate3d(0,-3px,0) scale(1.02);box-shadow:var(--shadow),var(--inner-light);border-color:var(--stroke-2)}
 .note-card:active{transform:scale(.95)}
 
+/* Pin badge on the note card (top-right, slightly inset) */
+.note-card .pin-badge{
+  position:absolute;
+  top:6px;
+  right:10px;
+  width:22px;
+  height:22px;
+  border-radius:50%;
+  display:grid;
+  place-items:center;
+  color:#fff;
+  background:linear-gradient(145deg,var(--accent),var(--accent-2));
+  box-shadow:0 4px 12px var(--accent-ring),inset 0 1px 0 rgba(255,255,255,.3);
+  z-index:3;
+  pointer-events:none;
+  animation:pinPop .4s var(--spring);
+}
+.note-card .pin-badge svg{width:12px;height:12px}
+@keyframes pinPop{
+  from{transform:scale(0) rotate(-45deg)}
+  to{transform:scale(1) rotate(0)}
+}
+/* Slightly dim the preview when pinned so the badge stands out */
+.note-card.pinned{box-shadow:var(--shadow),var(--inner-light),0 0 0 1px var(--accent-ring)}
+
 .note-card > .check{display:none}
 .note-card.selected{
   border-color:var(--danger-ring);
@@ -616,6 +641,44 @@ body.dark .ed-content a,body.dark .nc-preview a,body.dark .note-card a{
 .sb-count{justify-self:end;width:38px;height:38px;border-radius:50%;display:grid;place-items:center;
   font-size:13px;font-weight:800;color:#fff;
   background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.3)}
+
+/* ============ PIN MENU (long press popup) ============ */
+.pin-menu{
+  position:fixed;
+  z-index:145;
+  padding:6px;
+  border-radius:16px;
+  background:linear-gradient(160deg,var(--glass-3),var(--glass-2));
+  border:1px solid var(--stroke-2);
+  backdrop-filter:blur(28px) saturate(180%);
+  -webkit-backdrop-filter:blur(28px) saturate(180%);
+  box-shadow:var(--shadow-lg),var(--inner-light);
+  animation:pinMenuIn .35s var(--spring);
+  transform-origin:top center;
+  min-width:170px;
+}
+body.dark .pin-menu{
+  background:linear-gradient(160deg, rgba(22,24,42,.98), rgba(12,13,24,.94));
+}
+@keyframes pinMenuIn{
+  from{opacity:0;transform:scale(.82) translateY(-6px)}
+  to{opacity:1;transform:scale(1) translateY(0)}
+}
+.pin-menu-btn{
+  display:flex;align-items:center;gap:11px;
+  width:100%;padding:11px 13px;border-radius:11px;
+  font-size:13.5px;font-weight:600;color:var(--text);
+  transition:background .25s ease, transform .2s var(--spring);
+  text-align:left;background:transparent;border:none;cursor:pointer;
+}
+.pin-menu-btn:hover{background:var(--glass)}
+.pin-menu-btn:active{transform:scale(.96)}
+.pin-menu-btn.danger{color:var(--danger)}
+.pin-menu-btn.danger:hover{background:var(--danger-soft)}
+.pin-menu-btn svg{width:17px;height:17px;flex:0 0 auto}
+.pin-menu-btn.pinned{color:var(--accent);background:var(--accent-soft)}
+.pin-menu-btn.pinned:hover{background:var(--accent-soft)}
+.pin-menu-sep{height:1px;background:var(--stroke);margin:4px 8px}
 
 .sheet{position:fixed;inset:0;z-index:150;opacity:0;visibility:hidden;
   transition:opacity .35s ease,visibility .35s;
@@ -1665,6 +1728,7 @@ var K_USERS   = 'gn_users_v5';
 var K_SESSION = 'gn_session_v5';
 var K_STYLE   = 'gn_style_v5';
 var K_NOTES   = function(u){ return 'gn_notes_v5_' + u; };
+var MAX_PINNED = 3;
 
 function load(k, fb){
   try { var v = JSON.parse(localStorage.getItem(k)); return (v === null || v === undefined) ? fb : v; }
@@ -2319,6 +2383,7 @@ function persistUser(){
 function switchView(name){
   if (state.view === name) return;
   exitSelection();
+  closePinMenu();
 
   var oldView = $('#view-' + state.view);
   var newView = $('#view-' + name);
@@ -2328,7 +2393,6 @@ function switchView(name){
   if (app) app.style.position = 'relative';
 
   if (oldView && oldView.classList.contains('active')){
-    /* Snapshot the old view so it can fade away smoothly while the new one slides in */
     oldView.classList.add('leaving');
     var oldRef = oldView;
     setTimeout(function(){
@@ -2339,12 +2403,10 @@ function switchView(name){
   state.view = name;
   newView.classList.add('active');
 
-  /* Animate the dock pill with a spring that follows the finger feel */
   var activeBtn = document.querySelector('.dock button[data-view="' + name + '"]');
   $$('.dock button').forEach(function(b){ b.classList.toggle('active', b === activeBtn); });
   positionDockPill();
 
-  /* Subtle haptic-like pulse on the pressed button's icon */
   if (activeBtn){
     var icon = activeBtn.querySelector('svg');
     if (icon){
@@ -2380,7 +2442,6 @@ function positionDockPill(instant){
     });
     return;
   }
-  /* Smooth spring slide */
   var targetW = btn.offsetWidth;
   var targetX = btn.offsetLeft;
 
@@ -2393,10 +2454,14 @@ function activeNotes(){ return state.notes.filter(function(n){ return !n.deleted
 function trashedNotes(){ return state.notes.filter(function(n){ return n.deleted; }); }
 function sortNotes(arr){
   var a = arr.slice();
-  if (state.sort === 'newest') a.sort(function(x,y){ return y.updated - x.updated; });
-  else if (state.sort === 'oldest') a.sort(function(x,y){ return x.updated - y.updated; });
-  else if (state.sort === 'az') a.sort(function(x,y){
-    return (x.title || 'Untitled').localeCompare(y.title || 'Untitled', undefined, { sensitivity:'base' });
+  a.sort(function(x, y){
+    var px = x.pinned ? 1 : 0;
+    var py = y.pinned ? 1 : 0;
+    if (px !== py) return py - px; /* pinned notes first */
+    if (state.sort === 'newest') return y.updated - x.updated;
+    if (state.sort === 'oldest') return x.updated - y.updated;
+    if (state.sort === 'az') return (x.title || 'Untitled').localeCompare(y.title || 'Untitled', undefined, { sensitivity:'base' });
+    return 0;
   });
   return a;
 }
@@ -2418,6 +2483,8 @@ function safePreviewHTML(html){
   }
   return div.innerHTML;
 }
+var PIN_SVG_SMALL = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 17v5"/><path d="M9 10.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24V16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V7a1 1 0 0 1 1-1 2 2 0 0 0 0-4H8a2 2 0 0 0 0 4 1 1 0 0 1 1 1z"/></svg>';
+
 function cardHTML(n, i){
   var title = esc(n.title || 'Untitled');
   var content = safePreviewHTML(n.content || '');
@@ -2427,9 +2494,14 @@ function cardHTML(n, i){
   var preview = hasContent
     ? '<div class="nc-preview" style="' + previewStyle + '">' + content + '</div>'
     : '<span class="nc-preview-empty">—</span>';
+  var pinBadge = n.pinned
+    ? '<span class="pin-badge">' + PIN_SVG_SMALL + '</span>'
+    : '';
+  var cardClass = 'note-card' + (n.pinned ? ' pinned' : '');
   return '<div class="note-card-wrap" data-id="' + n.id + '" style="animation-delay:' + delay + 'ms">' +
-    '<article class="note-card" data-id="' + n.id + '">' +
+    '<article class="' + cardClass + '" data-id="' + n.id + '">' +
       '<span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5L20 7"/></svg></span>' +
+      pinBadge +
       preview +
     '</article>' +
     '<p class="nc-title-below">' + title + '</p>' +
@@ -2476,18 +2548,25 @@ function updateBadge(){
   b.classList.toggle('hidden', n === 0);
 }
 
-/* ================= NOTE INTERACTION ================= */
+/* ============================================================
+   LONG PRESS → PIN / DELETE MENU
+   ============================================================ */
 var pressTimer = null, longPressed = false, startX = 0, startY = 0;
+var pressX = 0, pressY = 0;
+
 document.addEventListener('pointerdown', function(e){
   var card = e.target.closest('.note-card');
   if (!card) return;
   if (state.viewOnly) return;
+  if (card.closest('#trashList')) return;
   startX = e.clientX; startY = e.clientY;
+  pressX = e.clientX; pressY = e.clientY;
+  var cardId = card.dataset.id;
   clearTimeout(pressTimer);
   pressTimer = setTimeout(function(){
     longPressed = true;
     try { if (navigator.vibrate) navigator.vibrate(18); } catch(err){}
-    enterSelection(card.dataset.id);
+    showPinMenu(cardId, pressX, pressY);
   }, 480);
 }, { passive: true });
 document.addEventListener('pointermove', function(e){
@@ -2512,6 +2591,112 @@ document.addEventListener('click', function(e){
 document.addEventListener('contextmenu', function(e){
   if (e.target.closest('.note-card')) e.preventDefault();
 });
+
+var PIN_ICON_MENU = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 17v5"/><path d="M9 10.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24V16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V7a1 1 0 0 1 1-1 2 2 0 0 0 0-4H8a2 2 0 0 0 0 4 1 1 0 0 1 1 1z"/></svg>';
+var DELETE_ICON_MENU = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M8 6V4h8v2M6 6l1 14h10l1-14"/></svg>';
+
+function showPinMenu(id, x, y){
+  closePinMenu();
+  var note = state.notes.find(function(n){ return n.id === id; });
+  if (!note) return;
+  var isPinned = !!note.pinned;
+  var pinCount = state.notes.filter(function(n){ return !n.deleted && n.pinned; }).length;
+  var canPin = isPinned || pinCount < MAX_PINNED;
+
+  var menu = document.createElement('div');
+  menu.className = 'pin-menu';
+  menu.id = 'pinMenu';
+  menu.innerHTML =
+    '<button class="pin-menu-btn danger" data-action="delete" type="button">' +
+      DELETE_ICON_MENU +
+      '<span>Delete</span>' +
+    '</button>' +
+    '<div class="pin-menu-sep"></div>' +
+    '<button class="pin-menu-btn' + (isPinned ? ' pinned' : '') + '" data-action="pin" type="button"' + (canPin ? '' : ' style="opacity:.55"') + '>' +
+      PIN_ICON_MENU +
+      '<span>' + (isPinned ? 'Unpin' : 'Pin') + '</span>' +
+    '</button>';
+
+  var menuWidth = 170;
+  var left = Math.max(12, Math.min(x - menuWidth / 2, window.innerWidth - menuWidth - 12));
+  menu.style.left = left + 'px';
+  menu.style.top = '-9999px';
+  menu.style.width = menuWidth + 'px';
+  document.body.appendChild(menu);
+
+  var mh = menu.offsetHeight;
+  var top = y + 14;
+  if (top + mh > window.innerHeight - 12) top = y - mh - 14;
+  top = Math.max(12, top);
+  menu.style.top = top + 'px';
+
+  menu.addEventListener('click', function(ev){
+    ev.stopPropagation();
+    var btn = ev.target.closest('.pin-menu-btn');
+    if (!btn) return;
+    var action = btn.dataset.action;
+    closePinMenu();
+    if (action === 'delete'){
+      deleteNoteById(id);
+    } else if (action === 'pin'){
+      if (!canPin){
+        toast('Maximum ' + MAX_PINNED + ' pinned notes', true);
+        return;
+      }
+      togglePinNote(id);
+    }
+  });
+
+  setTimeout(function(){
+    document.addEventListener('pointerdown', outsidePinMenuHandler, { passive: true });
+  }, 10);
+}
+
+function outsidePinMenuHandler(e){
+  var menu = document.getElementById('pinMenu');
+  if (menu && !menu.contains(e.target)) closePinMenu();
+}
+
+function closePinMenu(){
+  var menu = document.getElementById('pinMenu');
+  if (menu) menu.remove();
+  document.removeEventListener('pointerdown', outsidePinMenuHandler);
+}
+
+function deleteNoteById(id){
+  if (state.viewOnly){ requireAuth('delete notes'); return; }
+  var note = state.notes.find(function(n){ return n.id === id; });
+  if (!note) return;
+  note.deleted = true;
+  note.deletedAt = Date.now();
+  persist();
+  renderAll();
+  toast('Note moved to Trash', true);
+}
+
+function togglePinNote(id){
+  if (state.viewOnly){ requireAuth('pin notes'); return; }
+  var note = state.notes.find(function(n){ return n.id === id; });
+  if (!note) return;
+  if (note.pinned){
+    note.pinned = false;
+    note.pinnedAt = null;
+    persist();
+    renderAll();
+    toast('Note unpinned');
+    return;
+  }
+  var count = state.notes.filter(function(n){ return !n.deleted && n.pinned; }).length;
+  if (count >= MAX_PINNED){
+    toast('Maximum ' + MAX_PINNED + ' pinned notes', true);
+    return;
+  }
+  note.pinned = true;
+  note.pinnedAt = Date.now();
+  persist();
+  renderAll();
+  toast('Note pinned');
+}
 
 /* ================= SELECTION ================= */
 function enterSelection(id){
@@ -2563,6 +2748,7 @@ function openEditor(id){
       id: uid(), title: '', content: '',
       created: Date.now(), updated: Date.now(),
       deleted: false, deletedAt: null, isNew: true,
+      pinned: false, pinnedAt: null,
       font: state.style.noteFont,
       size: state.style.noteSize || 15,
       weight: 400,
@@ -2581,6 +2767,7 @@ function openEditor(id){
   if (typeof note.letterSpacing !== 'number') note.letterSpacing = 0;
   if (!note.align) note.align = 'left';
   if (typeof note.zoom !== 'number') note.zoom = 100;
+  if (typeof note.pinned !== 'boolean') note.pinned = false;
 
   state.editingId = note.id;
   var et = $('#edTitle'); if (et) et.value = note.title || '';
@@ -3435,7 +3622,8 @@ function init(){
         if (state.editingId) closeEditor();
       }
       if (e.key === 'Escape'){
-        if ($('#termsModal').classList.contains('open')) closeTermsModal();
+        if ($('#pinMenu')) closePinMenu();
+        else if ($('#termsModal').classList.contains('open')) closeTermsModal();
         else if ($('#linkModal').classList.contains('open')) closeLinkModal();
         else if ($('#formatPanel').classList.contains('open')) toggleFormatBar();
         else if (state.editingId) closeEditor();
