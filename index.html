@@ -93,7 +93,7 @@ input[type=range]::-webkit-slider-thumb{
 }
 .note-card{contain:layout style}
 .app, .sheet-body, .chips, .font-scroll, .format-tools-row,
-.notes, .letter-notes, .format-section{
+.notes, .letter-notes, .format-section, .format-panel-body{
   scroll-behavior:smooth;
   -webkit-overflow-scrolling:touch;
   overscroll-behavior:contain;
@@ -385,7 +385,6 @@ body.viewonly .app{padding-top:78px}
   from{transform:scale(0) rotate(-45deg)}
   to{transform:scale(1) rotate(0)}
 }
-/* Slightly dim the preview when pinned so the badge stands out */
 .note-card.pinned{box-shadow:var(--shadow),var(--inner-light),0 0 0 1px var(--accent-ring)}
 
 .note-card > .check{display:none}
@@ -574,7 +573,6 @@ body.dark .ed-content a,body.dark .nc-preview a,body.dark .note-card a{
 .dock.show{transform:translateX(-50%) translateY(0);opacity:1}
 .dock.hide{transform:translateX(-50%) translateY(140px);opacity:0;pointer-events:none}
 
-/* Beautiful spring pill that slides between tabs */
 .dock-pill{
   position:absolute;top:9px;bottom:9px;left:0;width:60px;
   border-radius:calc(var(--r-lg) - 8px);
@@ -718,48 +716,110 @@ body.dark .sheet{background:rgba(5,6,12,.55)}
 .sheet-head .mid{flex:1;text-align:center;font-size:12px;font-weight:700;letter-spacing:.6px;
   color:var(--text-muted);text-transform:uppercase}
 
-.format-panel{position:absolute;top:78px;left:12px;right:12px;max-height:66%;display:flex;flex-direction:column;
-  background:linear-gradient(180deg, rgba(255,255,255,.98), rgba(255,255,255,.90));
-  backdrop-filter:blur(26px) saturate(180%);
-  -webkit-backdrop-filter:blur(26px) saturate(180%);
-  border-radius:20px;border:1px solid var(--stroke-2);
-  box-shadow:0 18px 46px rgba(30,32,70,.22), inset 0 1px 0 rgba(255,255,255,.7);
-  transform:translateY(-14px) scale(.98);opacity:0;visibility:hidden;
-  transition:transform .4s var(--spring), opacity .28s ease, visibility .28s;
-  z-index:20;overflow:hidden}
-body.dark .format-panel{background:linear-gradient(180deg, rgba(22,24,42,.98), rgba(12,13,24,.94));
-  box-shadow:0 18px 46px rgba(0,0,0,.55), inset 0 1px 0 rgba(255,255,255,.14)}
-.format-panel.open{transform:translateY(0) scale(1);opacity:1;visibility:visible}
-.format-panel-head{display:flex;align-items:center;justify-content:space-between;padding:10px 14px 4px;flex:0 0 auto}
-.format-panel-head h4{font-size:10.5px;font-weight:800;letter-spacing:.9px;text-transform:uppercase;color:var(--text-muted)}
-.fp-close{width:26px;height:26px;border-radius:50%;display:grid;place-items:center;color:var(--text);
-  background:var(--glass);border:1px solid var(--stroke);transition:.25s var(--spring)}
+/* ============================================================
+   FORMAT PANEL — TALL SCROLLABLE GLASS PANEL
+   (like the pin menu, but taller & scrollable)
+   ============================================================ */
+.format-panel{
+  position:absolute;
+  top:78px;
+  right:12px;
+  width:min(310px, 86vw);
+  max-height:calc(100% - 190px);
+  display:flex;
+  flex-direction:column;
+  background:linear-gradient(180deg,var(--glass-3),var(--glass-2));
+  backdrop-filter:blur(30px) saturate(180%);
+  -webkit-backdrop-filter:blur(30px) saturate(180%);
+  border-radius:20px;
+  border:1px solid var(--stroke-2);
+  box-shadow:0 22px 60px rgba(30,32,70,.28), inset 0 1px 0 rgba(255,255,255,.65);
+  transform:translateY(-10px) scale(.94);
+  transform-origin:top right;
+  opacity:0;
+  visibility:hidden;
+  transition:transform .42s var(--spring), opacity .26s ease, visibility .26s;
+  z-index:22;
+  overflow:hidden;
+}
+body.dark .format-panel{
+  background:linear-gradient(180deg, rgba(26,28,48,.98), rgba(14,15,26,.95));
+  box-shadow:0 22px 60px rgba(0,0,0,.6), inset 0 1px 0 rgba(255,255,255,.14);
+}
+.format-panel.open{
+  transform:translateY(0) scale(1);
+  opacity:1;
+  visibility:visible;
+}
+
+.format-panel-head{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:13px 14px 6px;
+  flex:0 0 auto;
+  position:relative;
+}
+.format-panel-head::before{
+  content:'';
+  position:absolute;top:7px;left:50%;transform:translateX(-50%);
+  width:36px;height:3.5px;border-radius:2px;background:var(--stroke-2);
+  opacity:.6;
+}
+.format-panel-head h4{
+  font-size:10.5px;font-weight:800;letter-spacing:.9px;
+  text-transform:uppercase;color:var(--text-muted);
+  padding-top:6px;
+}
+.fp-close{
+  width:26px;height:26px;border-radius:50%;display:grid;place-items:center;color:var(--text);
+  background:var(--glass);border:1px solid var(--stroke);
+  transition:.25s var(--spring);margin-top:6px;
+}
 .fp-close:hover{background:var(--glass-2)}
 .fp-close:active{transform:scale(.9)}
 .fp-close svg{width:12px;height:12px}
 
-.format-tools-row{display:flex;align-items:center;gap:6px;padding:4px 12px 10px;
-  overflow-x:auto;scrollbar-width:none;flex:0 0 auto}
-.format-tools-row::-webkit-scrollbar{display:none}
-.ft-btn{flex:0 0 auto;display:flex;align-items:center;justify-content:center;gap:5px;height:42px;
-  min-width:44px;padding:0 12px;border-radius:12px;color:var(--text);background:var(--glass);
-  border:1px solid var(--stroke);font-size:14px;font-weight:700;
+/* Scrollable body inside the format panel */
+.format-panel-body{
+  flex:1;
+  overflow-y:auto;
+  -webkit-overflow-scrolling:touch;
+  overscroll-behavior:contain;
+  scrollbar-width:thin;
+  scrollbar-color:var(--stroke-2) transparent;
+  padding:0 0 12px;
+}
+.format-panel-body::-webkit-scrollbar{width:5px;height:5px}
+.format-panel-body::-webkit-scrollbar-thumb{background:var(--stroke-2);border-radius:3px}
+.format-panel-body::-webkit-scrollbar-track{background:transparent}
+
+/* Tools row wraps in the narrow panel */
+.format-tools-row{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  gap:6px;
+  padding:6px 12px 12px;
+  flex:0 0 auto;
+}
+.ft-btn{flex:0 0 auto;display:flex;align-items:center;justify-content:center;gap:5px;height:40px;
+  min-width:42px;padding:0 11px;border-radius:12px;color:var(--text);background:var(--glass);
+  border:1px solid var(--stroke);font-size:13.5px;font-weight:700;
   transition:background .3s ease, transform .22s var(--spring), border-color .3s, box-shadow .3s, color .3s;
   cursor:pointer;white-space:nowrap}
 .ft-btn:hover{background:var(--glass-2);border-color:var(--stroke-2)}
 .ft-btn:active{transform:scale(.93)}
 .ft-btn.on{color:#fff;background:linear-gradient(135deg, var(--accent), var(--accent-2));
   border-color:transparent;box-shadow:0 6px 16px var(--accent-ring)}
-.ft-btn svg{width:16px;height:16px}
-.ft-btn small{font-size:10px;font-weight:700;letter-spacing:.2px;opacity:.85}
-.ft-btn b,.ft-btn i,.ft-btn u,.ft-btn s{font-size:15px;line-height:1}
+.ft-btn svg{width:15px;height:15px}
+.ft-btn small{font-size:9.5px;font-weight:700;letter-spacing:.2px;opacity:.85}
+.ft-btn b,.ft-btn i,.ft-btn u,.ft-btn s{font-size:14px;line-height:1}
 .ft-btn.link-btn{color:#2563eb;background:linear-gradient(160deg, rgba(255,255,255,.96), rgba(255,255,255,.82));
   border-color:rgba(37,99,235,.28);box-shadow:0 4px 14px rgba(37,99,235,.14), inset 0 1px 0 rgba(255,255,255,.85)}
 body.dark .ft-btn.link-btn{color:#7cb3ff;background:linear-gradient(160deg, rgba(96,165,250,.16), rgba(96,165,250,.08));
   border-color:rgba(96,165,250,.32);box-shadow:0 4px 14px rgba(96,165,250,.18), inset 0 1px 0 rgba(255,255,255,.14)}
 .ft-btn.link-btn:hover{background:linear-gradient(160deg, rgba(255,255,255,1), rgba(255,255,255,.9));border-color:rgba(37,99,235,.45)}
 body.dark .ft-btn.link-btn:hover{background:linear-gradient(160deg, rgba(96,165,250,.22), rgba(96,165,250,.12));border-color:rgba(96,165,250,.45)}
-.ft-sep{flex:0 0 auto;width:1px;height:22px;background:var(--stroke-2);margin:0 2px}
+.ft-sep{flex:0 0 auto;width:100%;height:1px;background:var(--stroke);margin:2px 0;opacity:.7}
 .zoom-group{display:inline-flex;align-items:center;gap:2px;padding:3px;border-radius:12px;
   background:var(--glass);border:1px solid var(--stroke);flex:0 0 auto}
 .zoom-group .zoom-btn{width:30px;height:30px;border-radius:9px;display:grid;place-items:center;color:var(--text);
@@ -774,7 +834,7 @@ body.dark .ft-btn.link-btn:hover{background:linear-gradient(160deg, rgba(96,165,
   border-top:1px solid transparent;
   transition:max-height .5s var(--ease-out), padding .5s var(--ease-out), border-color .5s;
   flex:0 0 auto}
-.format-section.open{max-height:420px;padding:12px 14px 16px;border-top-color:var(--stroke);overflow-y:auto;
+.format-section.open{max-height:600px;padding:12px 14px 16px;border-top-color:var(--stroke);overflow-y:auto;
   -webkit-overflow-scrolling:touch}
 .format-section-head{font-size:10px;font-weight:800;letter-spacing:.8px;text-transform:uppercase;
   color:var(--text-muted);margin-bottom:10px}
@@ -788,7 +848,7 @@ body.dark .ft-btn.link-btn:hover{background:linear-gradient(160deg, rgba(96,165,
   padding:3px 8px;border-radius:8px;background:var(--accent-soft);border:1px solid var(--accent-ring);letter-spacing:.1px}
 
 .typo-seg{display:flex;gap:4px;padding:4px;border-radius:12px;background:var(--glass);border:1px solid var(--stroke)}
-.typo-seg button{flex:1;padding:9px 4px;border-radius:8px;font-size:12px;font-weight:700;
+.typo-seg button{flex:1;padding:9px 4px;border-radius:8px;font-size:11.5px;font-weight:700;
   color:var(--text-muted);background:transparent;border:none;cursor:pointer;
   transition:background .3s,color .3s,transform .2s var(--spring),box-shadow .3s}
 .typo-seg button:hover{color:var(--text);background:var(--glass-2)}
@@ -1496,6 +1556,7 @@ body.dark .mini-btn.restore{color:#6ee7b7}
       </button>
     </div>
 
+    <!-- FORMAT PANEL — tall vertical scrollable glass panel -->
     <div class="format-panel" id="formatPanel">
       <div class="format-panel-head">
         <h4>Format</h4>
@@ -1504,147 +1565,151 @@ body.dark .mini-btn.restore{color:#6ee7b7}
         </button>
       </div>
 
-      <div class="format-tools-row">
-        <button class="ft-btn" data-cmd="bold" type="button" title="Bold"><b>B</b></button>
-        <button class="ft-btn" data-cmd="italic" type="button" title="Italic"><i>I</i></button>
-        <button class="ft-btn" data-cmd="underline" type="button" title="Underline"><u>U</u></button>
-        <button class="ft-btn" data-cmd="strikeThrough" type="button" title="Strikethrough"><s>S</s></button>
-        <span class="ft-sep"></span>
-        <button class="ft-btn" data-cmd="addLineAbove" type="button" title="Add line above">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M12 3v14"/><path d="m6 9 6-6 6 6"/><path d="M4 21h16"/>
-          </svg>
-          <small>Above</small>
-        </button>
-        <button class="ft-btn" data-cmd="toggleLines" type="button" title="Ruled lines">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M3 7h18M3 12h18M3 17h18"/>
-          </svg>
-          <small>Lines</small>
-        </button>
-        <button class="ft-btn" data-cmd="insertUnorderedList" type="button" title="Bullet list">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M8 6h13M8 12h13M8 18h13"/>
-            <circle cx="3.5" cy="6" r="1" fill="currentColor"/>
-            <circle cx="3.5" cy="12" r="1" fill="currentColor"/>
-            <circle cx="3.5" cy="18" r="1" fill="currentColor"/>
-          </svg>
-          <small>List</small>
-        </button>
-        <button class="ft-btn" data-cmd="removeFormat" type="button" title="Clear formatting">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M6 6l12 12M18 6L6 18"/>
-          </svg>
-          <small>Clear</small>
-        </button>
-        <span class="ft-sep"></span>
-        <button class="ft-btn" data-cmd="fontPalette" type="button" title="Typography">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M4 20h4l4-16h4l4 16h-4"/><path d="M6.5 14h11"/>
-          </svg>
-          <small>Type</small>
-        </button>
-        <button class="ft-btn" data-cmd="textColorPalette" type="button" title="Text color">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M5 20h14"/>
-            <path d="M9.5 16 12 5l2.5 11"/>
-            <path d="M10.5 12h3"/>
-          </svg>
-          <small>Text</small>
-        </button>
-        <button class="ft-btn" data-cmd="lineColorPalette" type="button" title="Line color">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M3 12h18"/><path d="M3 18h18" opacity=".4"/>
-          </svg>
-          <small>Line</small>
-        </button>
-        <button class="ft-btn link-btn" id="linkBtn" type="button" title="Insert link">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
-            <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
-          </svg>
-          <small>Links</small>
-        </button>
-        <span class="ft-sep"></span>
-        <div class="zoom-group" role="group" aria-label="Zoom">
-          <button class="zoom-btn" id="zoomOut" type="button" aria-label="Zoom out">−</button>
-          <span class="zoom-val" id="zoomVal">100%</span>
-          <button class="zoom-btn" id="zoomIn" type="button" aria-label="Zoom in">+</button>
-        </div>
-      </div>
+      <div class="format-panel-body">
 
-      <div class="format-section" id="fontSection">
-        <div class="format-section-head">Typography</div>
-        <div class="font-scroll" id="fontRow"></div>
-
-        <div class="typo-row">
-          <div class="typo-row-label">
-            <span>Weight</span>
-            <span class="typo-value" id="weightVal">Regular</span>
-          </div>
-          <div class="typo-seg weight-seg" id="weightSeg">
-            <button type="button" data-weight="300"><i>Light</i></button>
-            <button type="button" data-weight="400" class="active">Regular</button>
-            <button type="button" data-weight="600"><b>Semi</b></button>
-            <button type="button" data-weight="700"><b>Bold</b></button>
-            <button type="button" data-weight="800"><b>Black</b></button>
+        <div class="format-tools-row">
+          <button class="ft-btn" data-cmd="bold" type="button" title="Bold"><b>B</b></button>
+          <button class="ft-btn" data-cmd="italic" type="button" title="Italic"><i>I</i></button>
+          <button class="ft-btn" data-cmd="underline" type="button" title="Underline"><u>U</u></button>
+          <button class="ft-btn" data-cmd="strikeThrough" type="button" title="Strikethrough"><s>S</s></button>
+          <span class="ft-sep"></span>
+          <button class="ft-btn" data-cmd="addLineAbove" type="button" title="Add line above">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 3v14"/><path d="m6 9 6-6 6 6"/><path d="M4 21h16"/>
+            </svg>
+            <small>Above</small>
+          </button>
+          <button class="ft-btn" data-cmd="toggleLines" type="button" title="Ruled lines">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 7h18M3 12h18M3 17h18"/>
+            </svg>
+            <small>Lines</small>
+          </button>
+          <button class="ft-btn" data-cmd="insertUnorderedList" type="button" title="Bullet list">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M8 6h13M8 12h13M8 18h13"/>
+              <circle cx="3.5" cy="6" r="1" fill="currentColor"/>
+              <circle cx="3.5" cy="12" r="1" fill="currentColor"/>
+              <circle cx="3.5" cy="18" r="1" fill="currentColor"/>
+            </svg>
+            <small>List</small>
+          </button>
+          <button class="ft-btn" data-cmd="removeFormat" type="button" title="Clear formatting">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M6 6l12 12M18 6L6 18"/>
+            </svg>
+            <small>Clear</small>
+          </button>
+          <span class="ft-sep"></span>
+          <button class="ft-btn" data-cmd="fontPalette" type="button" title="Typography">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M4 20h4l4-16h4l4 16h-4"/><path d="M6.5 14h11"/>
+            </svg>
+            <small>Type</small>
+          </button>
+          <button class="ft-btn" data-cmd="textColorPalette" type="button" title="Text color">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M5 20h14"/>
+              <path d="M9.5 16 12 5l2.5 11"/>
+              <path d="M10.5 12h3"/>
+            </svg>
+            <small>Text</small>
+          </button>
+          <button class="ft-btn" data-cmd="lineColorPalette" type="button" title="Line color">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 12h18"/><path d="M3 18h18" opacity=".4"/>
+            </svg>
+            <small>Line</small>
+          </button>
+          <button class="ft-btn link-btn" id="linkBtn" type="button" title="Insert link">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
+              <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
+            </svg>
+            <small>Links</small>
+          </button>
+          <span class="ft-sep"></span>
+          <div class="zoom-group" role="group" aria-label="Zoom">
+            <button class="zoom-btn" id="zoomOut" type="button" aria-label="Zoom out">−</button>
+            <span class="zoom-val" id="zoomVal">100%</span>
+            <button class="zoom-btn" id="zoomIn" type="button" aria-label="Zoom in">+</button>
           </div>
         </div>
 
-        <div class="typo-row">
-          <div class="typo-row-label">
-            <span>Size</span>
-            <span class="typo-value" id="noteSizeVal2">15px</span>
+        <div class="format-section" id="fontSection">
+          <div class="format-section-head">Typography</div>
+          <div class="font-scroll" id="fontRow"></div>
+
+          <div class="typo-row">
+            <div class="typo-row-label">
+              <span>Weight</span>
+              <span class="typo-value" id="weightVal">Regular</span>
+            </div>
+            <div class="typo-seg weight-seg" id="weightSeg">
+              <button type="button" data-weight="300"><i>Light</i></button>
+              <button type="button" data-weight="400" class="active">Regular</button>
+              <button type="button" data-weight="600"><b>Semi</b></button>
+              <button type="button" data-weight="700"><b>Bold</b></button>
+              <button type="button" data-weight="800"><b>Black</b></button>
+            </div>
           </div>
-          <div class="typo-slider">
-            <input type="range" id="noteSizeSlider2" min="11" max="32" step="1" value="15">
+
+          <div class="typo-row">
+            <div class="typo-row-label">
+              <span>Size</span>
+              <span class="typo-value" id="noteSizeVal2">15px</span>
+            </div>
+            <div class="typo-slider">
+              <input type="range" id="noteSizeSlider2" min="11" max="32" step="1" value="15">
+            </div>
+          </div>
+
+          <div class="typo-row">
+            <div class="typo-row-label">
+              <span>Line Height</span>
+              <span class="typo-value" id="lineHeightVal">1.85</span>
+            </div>
+            <div class="typo-slider">
+              <input type="range" id="lineHeightSlider" min="12" max="30" step="1" value="18">
+            </div>
+          </div>
+
+          <div class="typo-row">
+            <div class="typo-row-label">
+              <span>Letter Spacing</span>
+              <span class="typo-value" id="letterSpacingVal">0px</span>
+            </div>
+            <div class="typo-slider">
+              <input type="range" id="letterSpacingSlider" min="-20" max="40" step="1" value="0">
+            </div>
+          </div>
+
+          <div class="typo-row">
+            <div class="typo-row-label">
+              <span>Alignment</span>
+            </div>
+            <div class="typo-seg align-seg" id="alignSeg">
+              <button type="button" data-align="left" class="active" title="Left">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h18M3 12h12M3 18h18"/></svg>
+              </button>
+              <button type="button" data-align="center" title="Center">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h18M6 12h12M3 18h18"/></svg>
+              </button>
+              <button type="button" data-align="right" title="Right">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h18M9 12h12M3 18h18"/></svg>
+              </button>
+              <button type="button" data-align="justify" title="Justify">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+              </button>
+            </div>
           </div>
         </div>
 
-        <div class="typo-row">
-          <div class="typo-row-label">
-            <span>Line Height</span>
-            <span class="typo-value" id="lineHeightVal">1.85</span>
-          </div>
-          <div class="typo-slider">
-            <input type="range" id="lineHeightSlider" min="12" max="30" step="1" value="18">
-          </div>
+        <div class="format-section" id="colorSection">
+          <div class="format-section-head" id="colorSectionTitle">Text Color</div>
+          <div class="color-grid" id="colorGrid"></div>
         </div>
 
-        <div class="typo-row">
-          <div class="typo-row-label">
-            <span>Letter Spacing</span>
-            <span class="typo-value" id="letterSpacingVal">0px</span>
-          </div>
-          <div class="typo-slider">
-            <input type="range" id="letterSpacingSlider" min="-20" max="40" step="1" value="0">
-          </div>
-        </div>
-
-        <div class="typo-row">
-          <div class="typo-row-label">
-            <span>Alignment</span>
-          </div>
-          <div class="typo-seg align-seg" id="alignSeg">
-            <button type="button" data-align="left" class="active" title="Left">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h18M3 12h12M3 18h18"/></svg>
-            </button>
-            <button type="button" data-align="center" title="Center">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h18M6 12h12M3 18h18"/></svg>
-            </button>
-            <button type="button" data-align="right" title="Right">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h18M9 12h12M3 18h18"/></svg>
-            </button>
-            <button type="button" data-align="justify" title="Justify">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <div class="format-section" id="colorSection">
-        <div class="format-section-head" id="colorSectionTitle">Text Color</div>
-        <div class="color-grid" id="colorGrid"></div>
       </div>
     </div>
 
@@ -2457,7 +2522,7 @@ function sortNotes(arr){
   a.sort(function(x, y){
     var px = x.pinned ? 1 : 0;
     var py = y.pinned ? 1 : 0;
-    if (px !== py) return py - px; /* pinned notes first */
+    if (px !== py) return py - px;
     if (state.sort === 'newest') return y.updated - x.updated;
     if (state.sort === 'oldest') return x.updated - y.updated;
     if (state.sort === 'az') return (x.title || 'Untitled').localeCompare(y.title || 'Untitled', undefined, { sensitivity:'base' });
