@@ -149,6 +149,9 @@ input[type=range]::-webkit-slider-thumb{
 .view.active > *:nth-child(3){animation-delay:.10s}
 .view.active > *:nth-child(4){animation-delay:.14s}
 .view.active > *:nth-child(5){animation-delay:.18s}
+.view.active > *:nth-child(6){animation-delay:.22s}
+.view.active > *:nth-child(7){animation-delay:.26s}
+.view.active > *:nth-child(8){animation-delay:.30s}
 @keyframes childEnter{
   from{opacity:0;transform:translate3d(0,14px,0)}
   to{opacity:1;transform:translate3d(0,0,0)}
@@ -906,6 +909,16 @@ body.dark .mini-btn.restore{color:#6ee7b7}
 #trashList .trash-foot{display:flex;align-items:center;gap:7px;margin-top:12px;font-size:11px;
   color:var(--text-dim);font-weight:500;letter-spacing:.3px}
 #trashList .trash-actions{display:flex;gap:9px;margin-top:13px}
+
+/* ============ ABOUT VIEW ============ */
+.about-lead{font-size:13.5px;line-height:1.85;color:var(--text-muted)}
+.about-foot{text-align:center;font-size:11.5px;color:var(--text-dim);margin-top:28px;line-height:1.8}
+.about-badge{display:inline-flex;align-items:center;gap:7px;padding:6px 12px;border-radius:999px;
+  font-size:10.5px;font-weight:800;letter-spacing:.6px;text-transform:uppercase;
+  color:var(--accent);background:var(--accent-soft);border:1px solid var(--accent-ring);
+  margin-bottom:14px}
+.about-badge svg{width:13px;height:13px}
+.credit-heart{display:inline-block;transform:translateY(1px);color:var(--danger)}
 </style>
 </head>
 <body>
@@ -1193,6 +1206,170 @@ body.dark .mini-btn.restore{color:#6ee7b7}
       </div>
     </div>
   </section>
+
+  <!-- ABOUT VIEW -->
+  <section class="view" id="view-about">
+    <h1 class="h1">About</h1>
+    <p style="font-size:12.8px;color:var(--text-muted);margin-top:6px">The story, the features, and the people behind Glass Notes.</p>
+
+    <div class="panel" style="margin-top:20px">
+      <div class="style-block">
+        <div class="about-badge">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 3l2.4 5.6L20 9.6l-4 4.1.9 6-4.9-2.7L7.1 19.7l.9-6-4-4.1 5.6-1z"/>
+          </svg>
+          Version 1.9
+        </div>
+        <div class="sb-head" style="margin-bottom:10px">
+          <div class="row-ico">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M5 4h11l3 3v13a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1Z"/>
+              <path d="M8 10h8M8 14h5"/>
+            </svg>
+          </div>
+          <div><h4>Glass Notes</h4><p>A calm, frosted-glass notebook</p></div>
+        </div>
+        <p class="about-lead">
+          Glass Notes is a soft, quiet place to write. Everything about it is designed to feel light and calm —
+          floating glass panels, gentle motion, soft color, and nothing that gets in the way of your thoughts.
+          It works like a notebook should: you open it, you write, and everything is saved.
+          <br><br>
+          Under the surface, it is a private, offline notebook. Your notes live only on your own device —
+          no cloud, no server, no tracking, no ads. Just you, your words, and a little bit of glass.
+        </p>
+      </div>
+    </div>
+
+    <p class="sec-title">How it works</p>
+    <div class="panel">
+      <div class="row">
+        <div class="row-ico">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="4" y="3" width="16" height="18" rx="2.5"/>
+            <path d="M9 18h6"/>
+          </svg>
+        </div>
+        <div class="row-txt"><h4>Everything stays on your device</h4><p>Notes are saved in your browser's local storage — never uploaded.</p></div>
+      </div>
+      <div class="row">
+        <div class="row-ico">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M5 12.5a7 7 0 0 1 14 0"/>
+            <path d="M8.5 15.5a3.5 3.5 0 0 1 7 0"/>
+            <path d="M2 2l20 20"/>
+          </svg>
+        </div>
+        <div class="row-txt"><h4>Works fully offline</h4><p>No internet needed. Open it anywhere, anytime.</p></div>
+      </div>
+      <div class="row">
+        <div class="row-ico">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 12a9 9 0 1 1-3-6.7"/>
+            <path d="M21 4v5h-5"/>
+          </svg>
+        </div>
+        <div class="row-txt"><h4>Saves as you write</h4><p>Notes auto-save on close, on tab switch, or when you tap Save.</p></div>
+      </div>
+      <div class="row">
+        <div class="row-ico">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="4" y="10" width="16" height="10" rx="2.5"/>
+            <path d="M8 10V7a4 4 0 0 1 8 0v3"/>
+            <path d="M12 14v2"/>
+          </svg>
+        </div>
+        <div class="row-txt"><h4>Private sign-in</h4><p>Passwords are hashed and stored on-device — no server ever sees them.</p></div>
+      </div>
+    </div>
+
+    <p class="sec-title">What's inside</p>
+    <div class="panel">
+      <div class="row">
+        <div class="row-ico">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 19l7-7 3 3-7 7-3-3z"/>
+            <path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/>
+          </svg>
+        </div>
+        <div class="row-txt"><h4>Rich text editor</h4><p>Bold, italic, underline, lists, colors, and clickable links.</p></div>
+      </div>
+      <div class="row">
+        <div class="row-ico">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 20h4l4-16h4l4 16h-4"/><path d="M6.5 14h11"/>
+          </svg>
+        </div>
+        <div class="row-txt"><h4>Typography controls</h4><p>Font, size, weight, spacing, alignment and zoom for every note.</p></div>
+      </div>
+      <div class="row">
+        <div class="row-ico">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="9"/>
+            <path d="M12 3a9 9 0 0 0 0 18 4.5 4.5 0 0 0 0-9 4.5 4.5 0 0 1 0-9Z"/>
+          </svg>
+        </div>
+        <div class="row-txt"><h4>Themes &amp; accents</h4><p>Light, dark, or automatic — with ten accent colors to choose from.</p></div>
+      </div>
+      <div class="row">
+        <div class="row-ico">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="7"/><path d="m20 20-3.2-3.2"/>
+          </svg>
+        </div>
+        <div class="row-txt"><h4>Search &amp; Trash</h4><p>Find any note instantly. Deleted notes wait safely in the Trash.</p></div>
+      </div>
+      <div class="row">
+        <div class="row-ico">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/>
+          </svg>
+        </div>
+        <div class="row-txt"><h4>Export &amp; backup</h4><p>Download all your notes as a single .json file any time.</p></div>
+      </div>
+      <div class="row">
+        <div class="row-ico">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 3l9 5-9 5-9-5 9-5Z"/>
+            <path d="m3 14 9 5 9-5"/>
+          </svg>
+        </div>
+        <div class="row-txt"><h4>Glass design</h4><p>Adjustable blur, corner radius, and floating color orbs behind everything.</p></div>
+      </div>
+    </div>
+
+    <p class="sec-title">Credits</p>
+    <div class="panel">
+      <div class="row" style="cursor:default">
+        <div class="row-ico">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+            <path d="m8 6-6 6 6 6"/><path d="m16 6 6 6-6 6"/>
+          </svg>
+        </div>
+        <div class="row-txt">
+          <h4 style="white-space:normal">only</h4>
+          <p style="white-space:normal">Wrote the code — and only the code. Every line of it.</p>
+        </div>
+      </div>
+      <div class="row" style="cursor:default">
+        <div class="row-ico">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 18h6"/>
+            <path d="M10 22h4"/>
+            <path d="M12 2a7 7 0 0 0-4 12.7V18h8v-3.3A7 7 0 0 0 12 2Z"/>
+          </svg>
+        </div>
+        <div class="row-txt">
+          <h4 style="white-space:normal">Elysia</h4>
+          <p style="white-space:normal">The owner of the ideas behind the site.</p>
+        </div>
+      </div>
+    </div>
+
+    <p class="about-foot">
+      Made with <span class="credit-heart">♥</span> and a lot of glass.<br>
+      Your notes never leave this device.
+    </p>
+  </section>
 </div>
 
 <!-- DOCK -->
@@ -1223,6 +1400,12 @@ body.dark .mini-btn.restore{color:#6ee7b7}
       <path d="M19.4 15a1.7 1.7 0 0 0 .34 1.87l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.7 1.7 0 0 0-1.87-.34 1.7 1.7 0 0 0-1.03 1.56V21a2 2 0 1 1-4 0v-.09A1.7 1.7 0 0 0 8.9 19.3a1.7 1.7 0 0 0-1.87.34l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.7 1.7 0 0 0 4.7 15a1.7 1.7 0 0 0-1.56-1.03H3a2 2 0 1 1 0-4h.09A1.7 1.7 0 0 0 4.7 8.9a1.7 1.7 0 0 0-.34-1.87l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.7 1.7 0 0 0 9 4.7a1.7 1.7 0 0 0 1.03-1.56V3a2 2 0 1 1 4 0v.09A1.7 1.7 0 0 0 15.1 4.7a1.7 1.7 0 0 0 1.87-.34l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.7 1.7 0 0 0 19.3 9v.01a1.7 1.7 0 0 0 1.56 1.03H21a2 2 0 1 1 0 4h-.09a1.7 1.7 0 0 0-1.51 1.03Z"/>
     </svg>
     <span>Settings</span>
+  </button>
+  <button data-view="about" type="button">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="9"/><path d="M12 16v-4M12 8h.01"/>
+    </svg>
+    <span>About</span>
   </button>
 </nav>
 
@@ -3293,7 +3476,7 @@ function init(){
       var dx = e.changedTouches[0].clientX - sx;
       var dy = e.changedTouches[0].clientY - sy;
       if (Math.abs(dx) < 70 || Math.abs(dy) > 60) return;
-      var order = ['home','search','trash','settings'];
+      var order = ['home','search','trash','settings','about'];
       var i = order.indexOf(state.view);
       if (dx < 0) i = Math.min(i + 1, order.length - 1);
       else i = Math.max(i - 1, 0);
