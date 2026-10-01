@@ -37,6 +37,9 @@
   --danger:#ff5560;
   --danger-soft:rgba(255,85,96,.12);
   --danger-ring:rgba(255,85,96,.28);
+  --success:#10b981;
+  --success-soft:rgba(16,185,129,.14);
+  --success-ring:rgba(16,185,129,.32);
   --glass-blur:22px;
   --dock-h:76px;
   --note-font:inherit;
@@ -57,6 +60,7 @@ body.dark{
   --shadow-lg:0 24px 60px rgba(0,0,0,.55);
   --inner-light:inset 0 1px 0 rgba(255,255,255,.16);
   --danger:#ff5a5a;--danger-soft:rgba(255,90,90,.14);--danger-ring:rgba(255,90,90,.3);
+  --success:#34d399;--success-soft:rgba(52,211,153,.16);--success-ring:rgba(52,211,153,.36);
 }
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{height:100%}
@@ -81,6 +85,7 @@ button, .chip, .swatch, .color-swatch, .font-chip, .ft-btn,
 .icon-btn, .mini-btn, .fab, .btn-primary, .row,
 .note-card, .note-card-wrap, .letter, .dock button, .dock-pill,
 .zoom-btn, .fp-close, .skip-btn, .tabs button, .seg-control button,
+.device-seg button,
 input[type=range]::-webkit-slider-thumb{
   transition-timing-function: var(--spring);
 }
@@ -115,35 +120,15 @@ input[type=range]::-webkit-slider-thumb{
   animation: viewExit .35s var(--ease-in-out) both;
 }
 @keyframes viewEnter{
-  0%{
-    opacity:0;
-    transform: translate3d(0, 24px, 0) scale(.985);
-    filter: blur(2px);
-  }
-  60%{
-    opacity:1;
-    filter: blur(0);
-  }
-  100%{
-    opacity:1;
-    transform: translate3d(0, 0, 0) scale(1);
-    filter: blur(0);
-  }
+  0%{opacity:0;transform: translate3d(0, 24px, 0) scale(.985);filter: blur(2px);}
+  60%{opacity:1;filter: blur(0);}
+  100%{opacity:1;transform: translate3d(0, 0, 0) scale(1);filter: blur(0);}
 }
 @keyframes viewExit{
-  0%{
-    opacity:1;
-    transform: translate3d(0, 0, 0) scale(1);
-  }
-  100%{
-    opacity:0;
-    transform: translate3d(0, -14px, 0) scale(.99);
-  }
+  0%{opacity:1;transform: translate3d(0, 0, 0) scale(1);}
+  100%{opacity:0;transform: translate3d(0, -14px, 0) scale(.99);}
 }
-/* Stagger children for a beautiful reveal */
-.view.active > *{
-  animation: childEnter .55s var(--spring-soft) both;
-}
+.view.active > *{animation: childEnter .55s var(--spring-soft) both;}
 .view.active > *:nth-child(1){animation-delay:.02s}
 .view.active > *:nth-child(2){animation-delay:.06s}
 .view.active > *:nth-child(3){animation-delay:.10s}
@@ -169,12 +154,7 @@ input[type=range]::-webkit-slider-thumb{
 
 /* ============ BACKGROUND ORBS — FULL FOG ============ */
 .orbs{position:fixed;inset:0;overflow:hidden;z-index:0;pointer-events:none}
-.orb{
-  position:absolute;border-radius:50%;
-  filter:blur(100px);
-  opacity:.75;
-  will-change:transform;
-}
+.orb{position:absolute;border-radius:50%;filter:blur(100px);opacity:.75;will-change:transform;}
 .o1{width:480px;height:480px;background:var(--accent);top:-180px;left:-150px;animation:float1 22s ease-in-out infinite}
 .o2{width:440px;height:440px;background:#ff7eb6;bottom:-190px;right:-160px;animation:float2 26s ease-in-out infinite}
 .o3{width:400px;height:400px;background:#4fd6ff;top:42%;left:56%;opacity:.55;animation:float1 30s ease-in-out infinite reverse}
@@ -271,6 +251,40 @@ body:not(.dark) .o3{opacity:.42}
 .btn-primary:active{transform:scale(.97)}
 .auth-note{margin-top:16px;font-size:11.5px;text-align:center;color:var(--text-dim);line-height:1.6}
 
+/* ============ DEVICE SELECTOR (Login form) ============ */
+.device-select{
+  margin:4px 0 14px;
+  overflow:hidden;
+  max-height:180px;
+  transition:max-height .45s var(--ease-out), opacity .3s ease, margin .45s var(--ease-out);
+}
+.device-select.hidden{
+  max-height:0;
+  opacity:0;
+  margin:0;
+  pointer-events:none;
+}
+.device-label{
+  font-size:11px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;
+  color:var(--text-muted);margin:0 0 8px 4px;text-align:center;
+}
+.device-seg{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.device-seg button{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;
+  padding:14px 8px 12px;border-radius:var(--r-sm);
+  background:var(--glass);border:1.5px solid var(--stroke);
+  color:var(--text-muted);font-size:12px;font-weight:700;letter-spacing:.2px;
+  transition:all .3s var(--spring);
+}
+.device-seg button svg{width:26px;height:26px;transition:transform .3s var(--spring)}
+.device-seg button:hover{background:var(--glass-2);border-color:var(--stroke-2);color:var(--text)}
+.device-seg button:active{transform:scale(.96)}
+.device-seg button.active{
+  color:#fff;background:linear-gradient(135deg,var(--accent),var(--accent-2));
+  border-color:transparent;box-shadow:0 8px 20px var(--accent-ring);
+}
+.device-seg button.active svg{transform:scale(1.1) translateY(-1px)}
+
 .viewonly-bar{position:fixed;top:12px;left:50%;transform:translate(-50%,-140%);z-index:130;
   width:min(92%,460px);padding:11px 14px;display:flex;align-items:center;gap:12px;
   border-radius:var(--r-sm);
@@ -364,26 +378,14 @@ body.viewonly .app{padding-top:78px}
 .note-card:active{transform:scale(.95)}
 
 .note-card .pin-badge{
-  position:absolute;
-  top:6px;
-  right:10px;
-  width:22px;
-  height:22px;
-  border-radius:50%;
-  display:grid;
-  place-items:center;
-  color:#fff;
+  position:absolute;top:6px;right:10px;width:22px;height:22px;border-radius:50%;
+  display:grid;place-items:center;color:#fff;
   background:linear-gradient(145deg,var(--accent),var(--accent-2));
   box-shadow:0 4px 12px var(--accent-ring),inset 0 1px 0 rgba(255,255,255,.3);
-  z-index:3;
-  pointer-events:none;
-  animation:pinPop .4s var(--spring);
+  z-index:3;pointer-events:none;animation:pinPop .4s var(--spring);
 }
 .note-card .pin-badge svg{width:12px;height:12px}
-@keyframes pinPop{
-  from{transform:scale(0) rotate(-45deg)}
-  to{transform:scale(1) rotate(0)}
-}
+@keyframes pinPop{from{transform:scale(0) rotate(-45deg)}to{transform:scale(1) rotate(0)}}
 .note-card.pinned{box-shadow:var(--shadow),var(--inner-light),0 0 0 1px var(--accent-ring)}
 
 .note-card > .check{display:none}
@@ -392,13 +394,8 @@ body.viewonly .app{padding-top:78px}
   box-shadow:0 0 0 2px var(--danger-ring),0 14px 40px var(--danger-soft);
 }
 .note-card.selected > .check{
-  display:grid;
-  position:absolute;
-  bottom:5px;right:5px;
-  width:11px;height:11px;
-  z-index:3;
-  place-items:center;
-  color:#fff;
+  display:grid;position:absolute;bottom:5px;right:5px;width:11px;height:11px;z-index:3;
+  place-items:center;color:#fff;
 }
 .note-card.selected > .check svg{width:7px;height:7px}
 .note-card.selected::after{
@@ -574,15 +571,13 @@ body.dark .ed-content a,body.dark .nc-preview a,body.dark .note-card a{
 
 .dock-pill{
   position:absolute;top:9px;bottom:9px;left:0;width:60px;
-  border-radius:calc(var(--r-lg) - 8px);
-  z-index:1;
+  border-radius:calc(var(--r-lg) - 8px);z-index:1;
   background:linear-gradient(180deg,var(--glass-3),var(--glass-2));
   border:1px solid var(--stroke-2);
   box-shadow:var(--shadow-sm),inset 0 1px 0 rgba(255,255,255,.4);
   transition:transform .55s cubic-bezier(.34,1.4,.5,1),
              width .55s cubic-bezier(.34,1.4,.5,1);
-  pointer-events:none;
-  will-change:transform,width;
+  pointer-events:none;will-change:transform,width;
 }
 .dock button{
   position:relative;z-index:2;flex:1;
@@ -591,14 +586,8 @@ body.dark .ed-content a,body.dark .nc-preview a,body.dark .note-card a{
   color:var(--text-dim);
   transition:color .4s var(--ease-out);
 }
-.dock button svg{
-  width:21px;height:21px;
-  transition:transform .5s var(--spring);
-}
-.dock button span{
-  font-size:9.6px;font-weight:700;letter-spacing:.4px;
-  transition:transform .4s var(--spring),opacity .35s ease;
-}
+.dock button svg{width:21px;height:21px;transition:transform .5s var(--spring);}
+.dock button span{font-size:9.6px;font-weight:700;letter-spacing:.4px;transition:transform .4s var(--spring),opacity .35s ease;}
 .dock button.active{color:var(--accent)}
 .dock button.active svg{transform:scale(1.16) translateY(-2px)}
 .dock button.active span{transform:scale(1.04)}
@@ -641,26 +630,17 @@ body.dark .ed-content a,body.dark .nc-preview a,body.dark .note-card a{
 
 /* ============ PIN MENU (long press popup) ============ */
 .pin-menu{
-  position:fixed;
-  z-index:145;
-  padding:6px;
-  border-radius:16px;
+  position:fixed;z-index:145;padding:6px;border-radius:16px;
   background:linear-gradient(160deg,var(--glass-3),var(--glass-2));
   border:1px solid var(--stroke-2);
   backdrop-filter:blur(28px) saturate(180%);
   -webkit-backdrop-filter:blur(28px) saturate(180%);
   box-shadow:var(--shadow-lg),var(--inner-light);
   animation:pinMenuIn .35s var(--spring);
-  transform-origin:top center;
-  min-width:180px;
+  transform-origin:top center;min-width:180px;
 }
-body.dark .pin-menu{
-  background:linear-gradient(160deg, rgba(22,24,42,.98), rgba(12,13,24,.94));
-}
-@keyframes pinMenuIn{
-  from{opacity:0;transform:scale(.82) translateY(-6px)}
-  to{opacity:1;transform:scale(1) translateY(0)}
-}
+body.dark .pin-menu{background:linear-gradient(160deg, rgba(22,24,42,.98), rgba(12,13,24,.94));}
+@keyframes pinMenuIn{from{opacity:0;transform:scale(.82) translateY(-6px)}to{opacity:1;transform:scale(1) translateY(0)}}
 .pin-menu-btn{
   display:flex;align-items:center;gap:11px;
   width:100%;padding:11px 13px;border-radius:11px;
@@ -719,53 +699,37 @@ body.dark .sheet{background:rgba(5,6,12,.55)}
    FORMAT PANEL — TALL SCROLLABLE GLASS PANEL
    ============================================================ */
 .format-panel{
-  position:absolute;
-  top:78px;
-  right:12px;
+  position:absolute;top:78px;right:12px;
   width:min(310px, 86vw);
   max-height:calc(100% - 190px);
-  display:flex;
-  flex-direction:column;
+  display:flex;flex-direction:column;
   background:linear-gradient(180deg,var(--glass-3),var(--glass-2));
   backdrop-filter:blur(30px) saturate(180%);
   -webkit-backdrop-filter:blur(30px) saturate(180%);
-  border-radius:20px;
-  border:1px solid var(--stroke-2);
+  border-radius:20px;border:1px solid var(--stroke-2);
   box-shadow:0 22px 60px rgba(30,32,70,.28), inset 0 1px 0 rgba(255,255,255,.65);
   transform:translateY(-10px) scale(.94);
-  transform-origin:top right;
-  opacity:0;
-  visibility:hidden;
+  transform-origin:top right;opacity:0;visibility:hidden;
   transition:transform .42s var(--spring), opacity .26s ease, visibility .26s;
-  z-index:22;
-  overflow:hidden;
+  z-index:22;overflow:hidden;
 }
 body.dark .format-panel{
   background:linear-gradient(180deg, rgba(26,28,48,.98), rgba(14,15,26,.95));
   box-shadow:0 22px 60px rgba(0,0,0,.6), inset 0 1px 0 rgba(255,255,255,.14);
 }
-.format-panel.open{
-  transform:translateY(0) scale(1);
-  opacity:1;
-  visibility:visible;
-}
+.format-panel.open{transform:translateY(0) scale(1);opacity:1;visibility:visible;}
 
 .format-panel-head{
   display:flex;align-items:center;justify-content:space-between;
-  padding:13px 14px 6px;
-  flex:0 0 auto;
-  position:relative;
+  padding:13px 14px 6px;flex:0 0 auto;position:relative;
 }
 .format-panel-head::before{
-  content:'';
-  position:absolute;top:7px;left:50%;transform:translateX(-50%);
-  width:36px;height:3.5px;border-radius:2px;background:var(--stroke-2);
-  opacity:.6;
+  content:'';position:absolute;top:7px;left:50%;transform:translateX(-50%);
+  width:36px;height:3.5px;border-radius:2px;background:var(--stroke-2);opacity:.6;
 }
 .format-panel-head h4{
   font-size:10.5px;font-weight:800;letter-spacing:.9px;
-  text-transform:uppercase;color:var(--text-muted);
-  padding-top:6px;
+  text-transform:uppercase;color:var(--text-muted);padding-top:6px;
 }
 .fp-close{
   width:26px;height:26px;border-radius:50%;display:grid;place-items:center;color:var(--text);
@@ -777,12 +741,8 @@ body.dark .format-panel{
 .fp-close svg{width:12px;height:12px}
 
 .format-panel-body{
-  flex:1;
-  overflow-y:auto;
-  -webkit-overflow-scrolling:touch;
-  overscroll-behavior:contain;
-  scrollbar-width:thin;
-  scrollbar-color:var(--stroke-2) transparent;
+  flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;
+  scrollbar-width:thin;scrollbar-color:var(--stroke-2) transparent;
   padding:0 0 12px;
 }
 .format-panel-body::-webkit-scrollbar{width:5px;height:5px}
@@ -790,12 +750,8 @@ body.dark .format-panel{
 .format-panel-body::-webkit-scrollbar-track{background:transparent}
 
 .format-tools-row{
-  display:flex;
-  flex-wrap:wrap;
-  align-items:center;
-  gap:6px;
-  padding:6px 12px 12px;
-  flex:0 0 auto;
+  display:flex;flex-wrap:wrap;align-items:center;gap:6px;
+  padding:6px 12px 12px;flex:0 0 auto;
 }
 .ft-btn{flex:0 0 auto;display:flex;align-items:center;justify-content:center;gap:5px;height:40px;
   min-width:42px;padding:0 11px;border-radius:12px;color:var(--text);background:var(--glass);
@@ -894,8 +850,7 @@ body.dark .ed-content{background:rgba(255,255,255,.02)}
 
 .ed-content.lined{
   background-image:repeating-linear-gradient(
-    to bottom,
-    transparent 0,
+    to bottom,transparent 0,
     transparent calc(1em * var(--line-height, 1.85) - 1px),
     var(--stroke-2) calc(1em * var(--line-height, 1.85) - 1px),
     var(--stroke-2) calc(1em * var(--line-height, 1.85))
@@ -1039,7 +994,6 @@ body.dark .mini-btn.restore{color:#6ee7b7}
 .about-badge svg{width:13px;height:13px}
 .credit-heart{display:inline-block;transform:translateY(1px);color:var(--danger)}
 
-/* Updates timeline list */
 .update-list{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:8px}
 .update-list li{
   display:flex;align-items:flex-start;gap:10px;
@@ -1053,6 +1007,54 @@ body.dark .mini-btn.restore{color:#6ee7b7}
   box-shadow:0 0 0 3px var(--accent-soft);
 }
 .update-list li b{color:var(--text);font-weight:700}
+
+/* ============ CONNECTED DEVICES (Settings) ============ */
+.device-list{display:flex;flex-direction:column;gap:8px}
+.device-item{
+  display:flex;align-items:center;gap:12px;
+  padding:12px 14px;border-radius:var(--r-sm);
+  background:var(--glass);border:1px solid var(--stroke);
+  transition:background .3s ease, border-color .3s, box-shadow .3s;
+}
+.device-item.this-device{
+  background:var(--accent-soft);
+  border-color:var(--accent-ring);
+  box-shadow:0 4px 14px var(--accent-soft);
+}
+.device-item .dv-ico{
+  width:38px;height:38px;border-radius:12px;flex:0 0 auto;display:grid;place-items:center;
+  background:var(--glass-2);border:1px solid var(--stroke);color:var(--text-muted);
+  transition:background .3s ease, color .3s;
+}
+.device-item.this-device .dv-ico{
+  background:#fff;color:var(--accent);border-color:transparent;
+  box-shadow:0 4px 12px var(--accent-ring);
+}
+body.dark .device-item.this-device .dv-ico{background:rgba(255,255,255,.14)}
+.device-item .dv-ico svg{width:19px;height:19px}
+.device-item .dv-info{flex:1;min-width:0}
+.device-item .dv-name{
+  font-size:13.5px;font-weight:700;color:var(--text);letter-spacing:-.1px;
+  display:flex;align-items:center;gap:7px;
+}
+.device-item .dv-name .dv-you{
+  font-size:9.5px;font-weight:800;letter-spacing:.6px;text-transform:uppercase;
+  color:var(--accent);padding:2px 7px;border-radius:999px;
+  background:var(--accent-soft);border:1px solid var(--accent-ring);
+}
+.device-item .dv-sub{font-size:11px;color:var(--text-muted);margin-top:3px}
+.device-item .dv-check{
+  width:26px;height:26px;border-radius:50%;flex:0 0 auto;display:grid;place-items:center;
+  color:#fff;background:linear-gradient(140deg,#10b981,#059669);
+  box-shadow:0 4px 12px rgba(16,185,129,.4);
+  animation:popIn .35s var(--spring);
+}
+.device-item .dv-check svg{width:14px;height:14px}
+.device-item .dv-pending{
+  width:26px;height:26px;border-radius:50%;flex:0 0 auto;display:grid;place-items:center;
+  color:var(--text-dim);background:var(--glass);border:1.5px dashed var(--stroke-2);
+}
+.device-item .dv-pending svg{width:12px;height:12px}
 </style>
 </head>
 <body>
@@ -1084,6 +1086,28 @@ body.dark .mini-btn.restore{color:#6ee7b7}
       <div class="field"><input id="fUser" placeholder="Username" autocomplete="username" spellcheck="false"></div>
       <div class="field hidden" id="emailField"><input id="fEmail" type="email" placeholder="Email" autocomplete="email" spellcheck="false"></div>
       <div class="field"><input id="fPass" type="password" placeholder="Password" autocomplete="current-password"></div>
+
+      <!-- Device selector: visible only in Login mode -->
+      <div class="device-select" id="deviceSelect">
+        <p class="device-label">Sign in from</p>
+        <div class="device-seg" id="deviceSeg">
+          <button type="button" data-device="phone" id="devPhone">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="7" y="2" width="10" height="20" rx="2.6"/>
+              <path d="M11 18h2"/>
+            </svg>
+            <span>Phone</span>
+          </button>
+          <button type="button" data-device="computer" id="devComputer">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2" y="4" width="20" height="13" rx="2.2"/>
+              <path d="M8 21h8M12 17v4"/>
+            </svg>
+            <span>Computer</span>
+          </button>
+        </div>
+      </div>
+
       <div class="terms-row hidden" id="termsRow">
         <label class="terms-label">
           <span class="terms-checkbox">
@@ -1297,6 +1321,25 @@ body.dark .mini-btn.restore{color:#6ee7b7}
       </div>
     </div>
 
+    <!-- ================= DEVICES / SYNC ================= -->
+    <p class="sec-title">Devices</p>
+    <div class="panel">
+      <div class="style-block">
+        <div class="sb-head">
+          <div class="row-ico">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 4v4"/>
+              <path d="M8 4h8"/>
+              <rect x="4" y="8" width="16" height="12" rx="2.5"/>
+              <circle cx="12" cy="14" r="2.4"/>
+            </svg>
+          </div>
+          <div><h4>Connected Devices</h4><p>Devices signed in with your account</p></div>
+        </div>
+        <div class="device-list" id="deviceList"></div>
+      </div>
+    </div>
+
     <p class="sec-title">Account</p>
     <div class="panel">
       <div class="row" id="editProfileRow">
@@ -1374,23 +1417,19 @@ body.dark .mini-btn.restore{color:#6ee7b7}
       </div>
     </div>
 
-    <!-- ================= UPDATES / CHANGELOG ================= -->
     <p class="sec-title">Updates</p>
     <div class="panel">
       <div class="style-block">
         <div class="about-badge">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M12 3v18"/>
-            <path d="m5 8 7-5 7 5"/>
-            <path d="M5 16l7 5 7-5"/>
+            <path d="M12 3v18"/><path d="m5 8 7-5 7 5"/><path d="M5 16l7 5 7-5"/>
           </svg>
           Version 2.0 · What's new
         </div>
         <div class="sb-head" style="margin-bottom:12px">
           <div class="row-ico">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M12 3v3"/>
-              <path d="M12 18v3"/>
+              <path d="M12 3v3"/><path d="M12 18v3"/>
               <circle cx="12" cy="12" r="4"/>
               <path d="M4.5 4.5l2 2M17.5 17.5l2 2M4.5 19.5l2-2M17.5 6.5l2-2" opacity=".55"/>
             </svg>
@@ -1398,30 +1437,13 @@ body.dark .mini-btn.restore{color:#6ee7b7}
           <div><h4>The 2.0 Update</h4><p>Pinned notes, download &amp; share, and a smoother editor</p></div>
         </div>
         <ul class="update-list">
-          <li>
-            <span class="up-dot"></span>
-            <span><b>Pin up to 3 notes.</b> Long-press any note card and tap <b>Pin</b> to keep it at the top of your Home.</span>
-          </li>
-          <li>
-            <span class="up-dot"></span>
-            <span><b>Download any note.</b> Save a note as a clean <b>.txt</b> file straight from the long-press menu.</span>
-          </li>
-          <li>
-            <span class="up-dot"></span>
-            <span><b>Share instantly.</b> Send a note through your device's share sheet, or copy it to the clipboard with one tap.</span>
-          </li>
-          <li>
-            <span class="up-dot"></span>
-            <span><b>Taller, scrollable format panel.</b> All your text tools now live in a slim glass panel that scrolls smoothly — nothing gets cut off.</span>
-          </li>
-          <li>
-            <span class="up-dot"></span>
-            <span><b>Smoother long-press menu.</b> The pin / delete popup now shows more actions and lands more naturally on screen.</span>
-          </li>
-          <li>
-            <span class="up-dot"></span>
-            <span><b>Small polish everywhere.</b> Softer motion, tighter spacing, and a calmer glass look across the whole app.</span>
-          </li>
+          <li><span class="up-dot"></span><span><b>Pin up to 3 notes.</b> Long-press any note card and tap <b>Pin</b> to keep it at the top of your Home.</span></li>
+          <li><span class="up-dot"></span><span><b>Download any note.</b> Save a note as a clean <b>.txt</b> file straight from the long-press menu.</span></li>
+          <li><span class="up-dot"></span><span><b>Share instantly.</b> Send a note through your device's share sheet, or copy it to the clipboard with one tap.</span></li>
+          <li><span class="up-dot"></span><span><b>Sign in from Phone or Computer.</b> The login screen now asks where you are signing in from, and links your devices to your account.</span></li>
+          <li><span class="up-dot"></span><span><b>Connected Devices panel.</b> See your linked devices in Settings — with a green check for the other device when it's synced.</span></li>
+          <li><span class="up-dot"></span><span><b>Taller, scrollable format panel.</b> All your text tools now live in a slim glass panel that scrolls smoothly.</span></li>
+          <li><span class="up-dot"></span><span><b>Small polish everywhere.</b> Softer motion, tighter spacing, and a calmer glass look across the whole app.</span></li>
         </ul>
       </div>
     </div>
@@ -1527,7 +1549,7 @@ body.dark .mini-btn.restore{color:#6ee7b7}
             <path d="M12 17v5"/><path d="M9 10.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24V16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V7a1 1 0 0 1 1-1 2 2 0 0 0 0-4H8a2 2 0 0 0 0 4 1 1 0 0 1 1 1z"/>
           </svg>
         </div>
-        <div class="row-txt"><h4>Pin &amp; download notes</h4><p>Keep the important ones on top, or save &amp; share any note instantly.</p></div>
+        <div class="row-txt"><h4>Pin, download &amp; share</h4><p>Keep the important ones on top, or save &amp; share any note instantly.</p></div>
       </div>
     </div>
 
@@ -1636,7 +1658,6 @@ body.dark .mini-btn.restore{color:#6ee7b7}
       </div>
 
       <div class="format-panel-body">
-
         <div class="format-tools-row">
           <button class="ft-btn" data-cmd="bold" type="button" title="Bold"><b>B</b></button>
           <button class="ft-btn" data-cmd="italic" type="button" title="Italic"><i>I</i></button>
@@ -1779,7 +1800,6 @@ body.dark .mini-btn.restore{color:#6ee7b7}
           <div class="format-section-head" id="colorSectionTitle">Text Color</div>
           <div class="color-grid" id="colorGrid"></div>
         </div>
-
       </div>
     </div>
 
@@ -1947,12 +1967,21 @@ function debounce(fn, wait){
     t = setTimeout(function(){ fn.apply(ctx, args); }, wait);
   };
 }
-/* Safely turn a title into a filename */
 function safeFilename(title){
   var base = (title || 'Untitled').trim() || 'Untitled';
   base = base.replace(/[\\/:*?"<>|\u0000-\u001f]+/g, '_').replace(/\s+/g, ' ').trim();
   if (base.length > 60) base = base.slice(0, 60);
   return base;
+}
+function detectDeviceType(){
+  try {
+    var ua = navigator.userAgent || '';
+    if (/Android|iPhone|iPad|iPod|Mobile|Windows Phone|BlackBerry|Opera Mini/i.test(ua)) return 'phone';
+    if (/Macintosh|Windows|Linux|CrOS/i.test(ua) && !/Mobile/i.test(ua)) return 'computer';
+  } catch(e){}
+  /* fallback: small screen = phone */
+  try { if (window.innerWidth <= 820) return 'phone'; } catch(e){}
+  return 'computer';
 }
 
 /* ================= DEVICE FINGERPRINT ================= */
@@ -2057,6 +2086,7 @@ var state = {
   editingId: null,
   searchQuery: '',
   viewOnly: false,
+  currentDevice: detectDeviceType(),  /* 'phone' | 'computer' */
   style: load(K_STYLE, {
     theme:'light',
     accent:'#6b5cff',
@@ -2344,6 +2374,7 @@ function closeTermsModal(){
 
 /* ================= AUTH ================= */
 var authMode = 'login';
+var authDevice = detectDeviceType(); /* 'phone' | 'computer' — chosen in the login form */
 var authDebounce = 0;
 
 function positionTabPill(){
@@ -2354,6 +2385,15 @@ function positionTabPill(){
   if (!w) return;
   pill.style.width = w + 'px';
   pill.style.transform = 'translateX(' + (active.offsetLeft - 5) + 'px)';
+}
+function updateDeviceSegUI(){
+  $$('#deviceSeg button').forEach(function(b){
+    b.classList.toggle('active', b.dataset.device === authDevice);
+  });
+}
+function updateAuthVisibility(){
+  var ds = $('#deviceSelect');
+  if (ds) ds.classList.toggle('hidden', authMode !== 'login');
 }
 function initTabs(){
   $$('.tabs button').forEach(function(btn){
@@ -2369,9 +2409,19 @@ function initTabs(){
       if (ab) ab.textContent = authMode === 'signup' ? 'Create Account' : 'Login';
       var fp = $('#fPass');
       if (fp) fp.setAttribute('autocomplete', authMode === 'signup' ? 'new-password' : 'current-password');
+      updateAuthVisibility();
       showErr('');
     });
   });
+  /* device selector buttons */
+  $$('#deviceSeg button').forEach(function(b){
+    b.addEventListener('click', function(){
+      authDevice = b.dataset.device;
+      updateDeviceSegUI();
+    });
+  });
+  updateDeviceSegUI();
+  updateAuthVisibility();
   requestAnimationFrame(positionTabPill);
   window.addEventListener('load', positionTabPill);
   window.addEventListener('resize', debounce(positionTabPill, 120));
@@ -2405,12 +2455,23 @@ function handleAuthSubmit(){
       if (!agreed) return showErr('Please accept the Terms and Privacy Policy.');
       users[key] = {
         username: u, displayName: u, email: em, bio: '', avatar: '',
-        pass: hash(p), created: Date.now()
+        pass: hash(p), created: Date.now(),
+        linkedDevices: { phone:false, computer:false },
+        lastDevice: null
       };
       if (!save(K_USERS, users)) return showErr('Could not save. Storage may be full.');
+      /* Signup always starts from the current device */
+      authDevice = detectDeviceType();
       loginAs(key, true);
     } else {
       var found = users[key];
+      /* allow login by email too */
+      if (!found && u.indexOf('@') !== -1){
+        var lowerEm = u.toLowerCase();
+        for (var k in users){
+          if (users[k] && users[k].email && users[k].email.toLowerCase() === lowerEm){ found = users[k]; key = k; break; }
+        }
+      }
       if (!found) return showErr('No account found with that username.');
       if (found.pass !== hash(p)) return showErr('Incorrect password. Please try again.');
       loginAs(key, false);
@@ -2424,11 +2485,22 @@ function loginAs(key, isNew){
   var users = load(K_USERS, {});
   var u = users[key];
   if (!u){ showErr('Account not found. Please sign up.'); return; }
+
+  /* ensure linkedDevices exists */
+  if (!u.linkedDevices) u.linkedDevices = { phone:false, computer:false };
+  /* record this device as linked */
+  var deviceType = isNew ? detectDeviceType() : authDevice;
+  u.linkedDevices[deviceType] = true;
+  u.lastDevice = deviceType;
+  users[key] = u;
+  save(K_USERS, users);
+
   state.viewOnly = false;
   state.userKey = key;
   state.user = u;
+  state.currentDevice = deviceType;
   state.notes = load(K_NOTES(key), []);
-  save(K_SESSION, { user: key, at: Date.now(), device: getDeviceId(), info: getDeviceInfo() });
+  save(K_SESSION, { user: key, at: Date.now(), device: getDeviceId(), deviceType: deviceType, info: getDeviceInfo() });
   document.body.classList.remove('viewonly');
   var voBar = $('#viewonlyBar'); if (voBar) voBar.classList.remove('show');
   var authScr = $('#authScreen'); if (authScr) authScr.classList.add('hide');
@@ -2489,6 +2561,7 @@ function logout(){
   var voBar = $('#viewonlyBar'); if (voBar) voBar.classList.remove('show');
   document.body.style.overflow = '';
   authMode = 'login';
+  authDevice = detectDeviceType();
   $$('.tabs button').forEach(function(b, i){ b.classList.toggle('active', i === 0); });
   var ef = $('#emailField'); if (ef) ef.classList.add('hidden');
   var tr = $('#termsRow'); if (tr) tr.classList.add('hidden');
@@ -2497,6 +2570,8 @@ function logout(){
   var fp = $('#fPass'); if (fp) fp.value = '';
   var fe = $('#fEmail'); if (fe) fe.value = '';
   var ft = $('#fTerms'); if (ft) ft.checked = false;
+  updateDeviceSegUI();
+  updateAuthVisibility();
   showErr('');
   requestAnimationFrame(positionTabPill);
   setTimeout(function(){ try { $('#fUser').focus(); } catch(e){} }, 400);
@@ -2506,6 +2581,8 @@ function tryAutoLogin(){
   if (!s || !s.user) return false;
   var users = load(K_USERS, {});
   if (!users[s.user]){ localStorage.removeItem(K_SESSION); return false; }
+  /* restore device type from session */
+  if (s.deviceType) authDevice = s.deviceType;
   loginAs(s.user, false);
   return true;
 }
@@ -2520,7 +2597,7 @@ function persistUser(){
 }
 
 /* ============================================================
-   NAVIGATION — BEAUTIFULLY SMOOTH
+   NAVIGATION
    ============================================================ */
 function switchView(name){
   if (state.view === name) return;
@@ -2586,7 +2663,6 @@ function positionDockPill(instant){
   }
   var targetW = btn.offsetWidth;
   var targetX = btn.offsetLeft;
-
   pill.style.width = targetW + 'px';
   pill.style.transform = 'translateX(' + targetX + 'px)';
 }
@@ -2691,7 +2767,7 @@ function updateBadge(){
 }
 
 /* ============================================================
-   LONG PRESS → NOTE ACTIONS MENU (delete / download / share / pin)
+   LONG PRESS → NOTE ACTIONS MENU
    ============================================================ */
 var pressTimer = null, longPressed = false, startX = 0, startY = 0;
 var pressX = 0, pressY = 0;
@@ -2752,22 +2828,18 @@ function showPinMenu(id, x, y){
   menu.id = 'pinMenu';
   menu.innerHTML =
     '<button class="pin-menu-btn danger" data-action="delete" type="button">' +
-      DELETE_ICON_MENU +
-      '<span>Delete</span>' +
+      DELETE_ICON_MENU + '<span>Delete</span>' +
     '</button>' +
     '<div class="pin-menu-sep"></div>' +
     '<button class="pin-menu-btn" data-action="download" type="button">' +
-      DOWNLOAD_ICON_MENU +
-      '<span>Download</span>' +
+      DOWNLOAD_ICON_MENU + '<span>Download</span>' +
     '</button>' +
     '<button class="pin-menu-btn" data-action="share" type="button">' +
-      SHARE_ICON_MENU +
-      '<span>Share</span>' +
+      SHARE_ICON_MENU + '<span>Share</span>' +
     '</button>' +
     '<div class="pin-menu-sep"></div>' +
     '<button class="pin-menu-btn' + (isPinned ? ' pinned' : '') + '" data-action="pin" type="button"' + (canPin ? '' : ' style="opacity:.55"') + '>' +
-      PIN_ICON_MENU +
-      '<span>' + (isPinned ? 'Unpin' : 'Pin') + '</span>' +
+      PIN_ICON_MENU + '<span>' + (isPinned ? 'Unpin' : 'Pin') + '</span>' +
     '</button>';
 
   var menuWidth = 190;
@@ -2789,17 +2861,11 @@ function showPinMenu(id, x, y){
     if (!btn) return;
     var action = btn.dataset.action;
     closePinMenu();
-    if (action === 'delete'){
-      deleteNoteById(id);
-    } else if (action === 'download'){
-      downloadNoteById(id);
-    } else if (action === 'share'){
-      shareNoteById(id);
-    } else if (action === 'pin'){
-      if (!canPin){
-        toast('Maximum ' + MAX_PINNED + ' pinned notes', true);
-        return;
-      }
+    if (action === 'delete') deleteNoteById(id);
+    else if (action === 'download') downloadNoteById(id);
+    else if (action === 'share') shareNoteById(id);
+    else if (action === 'pin'){
+      if (!canPin){ toast('Maximum ' + MAX_PINNED + ' pinned notes', true); return; }
       togglePinNote(id);
     }
   });
@@ -2831,7 +2897,6 @@ function deleteNoteById(id){
   toast('Note moved to Trash', true);
 }
 
-/* ---- Download a note as a .txt file ---- */
 function downloadNoteById(id){
   var note = state.notes.find(function(n){ return n.id === id; });
   if (!note) return;
@@ -2857,7 +2922,6 @@ function downloadNoteById(id){
   }
 }
 
-/* ---- Share a note (native share sheet, fallback to copy) ---- */
 function shareNoteById(id){
   var note = state.notes.find(function(n){ return n.id === id; });
   if (!note) return;
@@ -2868,15 +2932,10 @@ function shareNoteById(id){
   if (navigator.share){
     try {
       navigator.share({ title: title, text: shareText }).catch(function(err){
-        /* User cancelled or not allowed — fail silently if AbortError */
-        if (err && err.name && err.name !== 'AbortError'){
-          copyToClipboard(shareText);
-        }
+        if (err && err.name && err.name !== 'AbortError') copyToClipboard(shareText);
       });
       return;
-    } catch(err){
-      /* fall through */
-    }
+    } catch(err){}
   }
   copyToClipboard(shareText);
 }
@@ -2885,9 +2944,7 @@ function copyToClipboard(text){
   if (navigator.clipboard && navigator.clipboard.writeText){
     navigator.clipboard.writeText(text).then(function(){
       toast('Note copied to clipboard');
-    }).catch(function(){
-      legacyCopy(text);
-    });
+    }).catch(function(){ legacyCopy(text); });
   } else {
     legacyCopy(text);
   }
@@ -2921,10 +2978,7 @@ function togglePinNote(id){
     return;
   }
   var count = state.notes.filter(function(n){ return !n.deleted && n.pinned; }).length;
-  if (count >= MAX_PINNED){
-    toast('Maximum ' + MAX_PINNED + ' pinned notes', true);
-    return;
-  }
+  if (count >= MAX_PINNED){ toast('Maximum ' + MAX_PINNED + ' pinned notes', true); return; }
   note.pinned = true;
   note.pinnedAt = Date.now();
   persist();
@@ -3155,9 +3209,7 @@ function openColorSection(mode){
   if (fs) fs.classList.remove('open');
   if (!cs) return;
   var alreadySame = cs.classList.contains('open') && cs.dataset.mode === mode;
-  if (alreadySame){
-    cs.classList.remove('open'); cs.dataset.mode = ''; return;
-  }
+  if (alreadySame){ cs.classList.remove('open'); cs.dataset.mode = ''; return; }
   cs.classList.add('open');
   cs.dataset.mode = mode;
   var title = $('#colorSectionTitle');
@@ -3361,6 +3413,60 @@ function renderTrash(){
 }
 
 /* ================= SETTINGS ================= */
+var PHONE_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="2" width="10" height="20" rx="2.6"/><path d="M11 18h2"/></svg>';
+var COMPUTER_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="13" rx="2.2"/><path d="M8 21h8M12 17v4"/></svg>';
+var CHECK_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5L20 7"/></svg>';
+var PENDING_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v4M12 16h.01"/></svg>';
+
+function renderConnectedDevices(){
+  var list = $('#deviceList');
+  if (!list) return;
+  var isGuest = state.viewOnly;
+  var u = state.user || {};
+  var linked = u.linkedDevices || { phone:false, computer:false };
+  var current = state.currentDevice || detectDeviceType();
+  var other = current === 'phone' ? 'computer' : 'phone';
+
+  var currentLabel = current === 'phone' ? 'This Phone' : 'This Computer';
+  var currentSub = 'Currently signed in';
+  var otherLabel = other === 'phone' ? 'Phone' : 'Computer';
+  var otherIsLinked = !!linked[other];
+  var otherSub = isGuest
+    ? 'Sign in to sync your notes'
+    : (otherIsLinked
+        ? 'Linked to your account — notes shared'
+        : 'Not linked yet — sign in from a ' + otherLabel.toLowerCase());
+
+  function iconFor(type){ return type === 'phone' ? PHONE_ICON : COMPUTER_ICON; }
+
+  var html = '';
+  /* current device row */
+  html += '<div class="device-item this-device">' +
+    '<div class="dv-ico">' + iconFor(current) + '</div>' +
+    '<div class="dv-info">' +
+      '<div class="dv-name">' + esc(currentLabel) +
+        '<span class="dv-you">You</span>' +
+      '</div>' +
+      '<div class="dv-sub">' + esc(currentSub) + '</div>' +
+    '</div>' +
+    '<div class="dv-check" title="Connected">' + CHECK_ICON + '</div>' +
+  '</div>';
+
+  /* other device row */
+  html += '<div class="device-item">' +
+    '<div class="dv-ico">' + iconFor(other) + '</div>' +
+    '<div class="dv-info">' +
+      '<div class="dv-name">' + esc(otherLabel) + '</div>' +
+      '<div class="dv-sub">' + esc(otherSub) + '</div>' +
+    '</div>' +
+    (otherIsLinked && !isGuest
+      ? '<div class="dv-check" title="Linked">' + CHECK_ICON + '</div>'
+      : '<div class="dv-pending" title="Not linked">' + PENDING_ICON + '</div>') +
+  '</div>';
+
+  list.innerHTML = html;
+}
+
 function renderSettings(){
   if (!state.user) return;
   var u = state.user;
@@ -3375,6 +3481,7 @@ function renderSettings(){
   var psEmail = $('#psEmail'); if (psEmail) psEmail.textContent = isGuest ? 'Tap to sign in' : (u.email || 'no email set');
   var ll = $('#logoutLabel'); if (ll) ll.textContent = isGuest ? 'Sign in' : 'Log out';
   var ld = $('#logoutDesc'); if (ld) ld.textContent = isGuest ? 'Access your notes' : 'Sign out of this device';
+  renderConnectedDevices();
   applyStyle();
 }
 function openProfile(){
