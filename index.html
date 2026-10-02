@@ -12,38 +12,26 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root{
-  --radius:22px;
-  --r-sm:calc(var(--radius) * 0.62);
-  --r-md:calc(var(--radius) * 0.86);
-  --r-lg:var(--radius);
-  --accent:#6b5cff;
-  --accent-2:#8b7cff;
-  --accent-soft:rgba(107,92,255,.14);
-  --accent-ring:rgba(107,92,255,.22);
+  --radius:22px;--r-sm:calc(var(--radius) * 0.62);--r-md:calc(var(--radius) * 0.86);--r-lg:var(--radius);
+  --accent:#6b5cff;--accent-2:#8b7cff;--accent-soft:rgba(107,92,255,.14);--accent-ring:rgba(107,92,255,.22);
   --bg-1:#eef1f8;--bg-2:#e2e7f2;
   --text:#181a2e;--text-muted:rgba(24,26,46,.55);--text-dim:rgba(24,26,46,.32);
   --glass:rgba(255,255,255,.55);--glass-2:rgba(255,255,255,.78);--glass-3:rgba(255,255,255,.92);
   --stroke:rgba(24,26,46,.07);--stroke-2:rgba(24,26,46,.14);
-  --shadow-sm:0 6px 20px rgba(30,32,70,.07);
-  --shadow:0 12px 34px rgba(30,32,70,.10);
-  --shadow-lg:0 24px 60px rgba(30,32,70,.16);
+  --shadow-sm:0 6px 20px rgba(30,32,70,.07);--shadow:0 12px 34px rgba(30,32,70,.10);--shadow-lg:0 24px 60px rgba(30,32,70,.16);
   --inner-light:inset 0 1px 0 rgba(255,255,255,.7);
   --danger:#ff5560;--danger-soft:rgba(255,85,96,.12);--danger-ring:rgba(255,85,96,.28);
   --success:#10b981;--success-soft:rgba(16,185,129,.14);--success-ring:rgba(16,185,129,.32);
   --glass-blur:22px;--dock-h:76px;--note-font:inherit;--note-size:15px;--app-max:520px;
-  --spring:cubic-bezier(.34,1.56,.64,1);
-  --spring-soft:cubic-bezier(.22,1.2,.36,1);
-  --ease-out:cubic-bezier(.16,1,.3,1);
-  --ease-in-out:cubic-bezier(.65,0,.35,1);
+  --spring:cubic-bezier(.34,1.56,.64,1);--spring-soft:cubic-bezier(.22,1.2,.36,1);
+  --ease-out:cubic-bezier(.16,1,.3,1);--ease-in-out:cubic-bezier(.65,0,.35,1);
 }
 body.dark{
   --bg-1:#06070d;--bg-2:#0a0b14;
   --text:#eaeefb;--text-muted:rgba(234,238,251,.55);--text-dim:rgba(234,238,251,.32);
   --glass:rgba(255,255,255,.07);--glass-2:rgba(255,255,255,.12);--glass-3:rgba(255,255,255,.18);
   --stroke:rgba(255,255,255,.14);--stroke-2:rgba(255,255,255,.26);
-  --shadow-sm:0 6px 20px rgba(0,0,0,.3);
-  --shadow:0 12px 34px rgba(0,0,0,.4);
-  --shadow-lg:0 24px 60px rgba(0,0,0,.55);
+  --shadow-sm:0 6px 20px rgba(0,0,0,.3);--shadow:0 12px 34px rgba(0,0,0,.4);--shadow-lg:0 24px 60px rgba(0,0,0,.55);
   --inner-light:inset 0 1px 0 rgba(255,255,255,.16);
   --danger:#ff5a5a;--danger-soft:rgba(255,90,90,.14);--danger-ring:rgba(255,90,90,.3);
   --success:#34d399;--success-soft:rgba(52,211,153,.16);--success-ring:rgba(52,211,153,.36);
@@ -670,7 +658,7 @@ body.dark .device-item.this-device .dv-ico{background:rgba(255,255,255,.14)}
       <div class="err" id="authErr"></div>
       <button class="btn-primary" type="submit" id="authBtn">Login</button>
     </form>
-    <p class="auth-note">Your notes are stored locally on this device.<br>To sync between devices, enable Cloud Sync in Settings.</p>
+    <p class="auth-note">Your notes are stored locally on this device.<br>To sync between devices, enable Sync in Settings.</p>
   </div>
 </div>
 
@@ -795,9 +783,7 @@ body.dark .device-item.this-device .dv-ico{background:rgba(255,255,255,.14)}
       </div>
       <div class="style-block">
         <div class="sb-head">
-          <div class="row-ico">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V9a5 5 0 0 1 5-5h11"/></svg>
-          </div>
+          <div class="row-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V9a5 5 0 0 1 5-5h11"/></svg></div>
           <div><h4>Corner Radius</h4><p>How round the shapes are</p></div>
         </div>
         <div class="slider-row">
@@ -826,27 +812,21 @@ body.dark .device-item.this-device .dv-ico{background:rgba(255,255,255,.14)}
     <div class="panel">
       <div class="style-block">
         <div class="sb-head">
-          <div class="row-ico">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h4l4-16h4l4 16h-4"/><path d="M6.5 14h11"/></svg>
-          </div>
+          <div class="row-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h4l4-16h4l4 16h-4"/><path d="M6.5 14h11"/></svg></div>
           <div><h4>Site Font</h4><p>Font used across the whole app</p></div>
         </div>
         <div class="font-scroll" id="siteFontScroll"></div>
       </div>
       <div class="style-block">
         <div class="sb-head">
-          <div class="row-ico">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 5h18M3 12h12M3 19h18"/></svg>
-          </div>
+          <div class="row-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 5h18M3 12h12M3 19h18"/></svg></div>
           <div><h4>Note Font</h4><p>Default font for note content</p></div>
         </div>
         <div class="font-scroll" id="noteFontScroll"></div>
       </div>
       <div class="style-block">
         <div class="sb-head">
-          <div class="row-ico">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M4 12h16M4 17h10"/></svg>
-          </div>
+          <div class="row-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M4 12h16M4 17h10"/></svg></div>
           <div><h4>Note Font Size</h4><p>Text size inside notes</p></div>
         </div>
         <div class="slider-row">
@@ -856,36 +836,55 @@ body.dark .device-item.this-device .dv-ico{background:rgba(255,255,255,.14)}
       </div>
     </div>
 
-    <!-- ================= CLOUD SYNC ================= -->
-    <p class="sec-title">Cloud Sync</p>
+    <!-- ================= QUICK SYNC ================= -->
+    <p class="sec-title">Sync</p>
     <div class="panel">
       <div class="style-block">
         <div class="sb-head">
           <div class="row-ico">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M17.5 19a4.5 4.5 0 0 0 0-9 6.5 6.5 0 0 0-12.7-1.7A4 4 0 0 0 6 19h11.5Z"/>
+              <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
+              <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
             </svg>
           </div>
-          <div><h4>GitHub Cloud</h4><p id="cloudStatusTxt">Not connected</p></div>
-          <span class="cloud-badge" id="cloudBadge"></span>
+          <div><h4>Quick Sync</h4><p id="syncStatusTxt">Not connected</p></div>
+          <span class="cloud-badge" id="syncBadge"></span>
         </div>
-        <div class="field" style="margin-bottom:10px">
-          <input id="cloudToken" type="password" placeholder="Paste your GitHub token" autocomplete="off" spellcheck="false">
+
+        <div id="syncNotConnected">
+          <div class="sync-actions">
+            <button class="primary full" id="syncCreateBtn" type="button">Create Sync Code</button>
+          </div>
+          <p style="text-align:center;font-size:10.5px;color:var(--text-muted);margin:12px 0 10px;letter-spacing:2px">— OR —</p>
+          <div class="field" style="margin-bottom:10px">
+            <input id="syncCodeInput" placeholder="Paste code here" autocomplete="off" spellcheck="false"
+                   style="text-align:center;font-family:monospace;letter-spacing:1px;font-size:13px">
+          </div>
+          <div class="sync-actions">
+            <button class="primary full" id="syncConnectBtn" type="button">Connect</button>
+          </div>
         </div>
-        <div class="sync-actions">
-          <button class="primary" id="cloudLinkBtn" type="button">Create / Link</button>
-          <button id="cloudSyncBtn" type="button">Sync Now</button>
-          <button class="danger full" id="cloudDiscBtn" type="button">Disconnect</button>
+
+        <div id="syncConnected" class="hidden">
+          <div class="field" style="margin-bottom:10px">
+            <input id="syncCodeDisplay" readonly
+                   style="text-align:center;font-family:monospace;letter-spacing:1px;font-size:12px;background:var(--accent-soft);border-color:var(--accent-ring);color:var(--accent);font-weight:700">
+          </div>
+          <div class="sync-actions">
+            <button class="primary" id="syncCopyBtn" type="button">Copy Code</button>
+            <button id="syncNowBtn" type="button">Sync Now</button>
+            <button class="danger full" id="syncDisconnectBtn" type="button">Disconnect</button>
+          </div>
         </div>
+
         <div class="cloud-help">
-          <b>How to get a token (30 seconds):</b>
+          <b>How to sync your devices (30 seconds):</b>
           <ol>
-            <li>Open <b>github.com/settings/tokens</b></li>
-            <li>Tap <b>Generate new token (classic)</b></li>
-            <li>Name it <b>Glass Notes</b>, check the <b>gist</b> scope only</li>
-            <li>Generate, copy, paste it above, tap <b>Create / Link</b></li>
+            <li>On <b>this device</b>: tap <b>Create Sync Code</b></li>
+            <li>Tap <b>Copy Code</b> and send it to your other device (WhatsApp, Notes, etc.)</li>
+            <li>On <b>the other device</b>: open Settings → Sync → paste code → <b>Connect</b></li>
+            <li>Done — both devices share everything automatically</li>
           </ol>
-          <div style="margin-top:6px">Use the <b>same token</b> on your other device — it links them automatically.</div>
         </div>
       </div>
     </div>
@@ -944,7 +943,7 @@ body.dark .device-item.this-device .dv-ico{background:rgba(255,255,255,.14)}
             <circle cx="12" cy="12" r="9"/><path d="M12 16v-4M12 8h.01"/>
           </svg>
         </div>
-        <div class="row-txt"><h4>Glass Notes</h4><p>Version 2.1 · Cloud sync via GitHub</p></div>
+        <div class="row-txt"><h4>Glass Notes</h4><p>Version 2.2 · Quick Sync</p></div>
       </div>
     </div>
   </section>
@@ -960,7 +959,7 @@ body.dark .device-item.this-device .dv-ico{background:rgba(255,255,255,.14)}
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M12 3l2.4 5.6L20 9.6l-4 4.1.9 6-4.9-2.7L7.1 19.7l.9-6-4-4.1 5.6-1z"/>
           </svg>
-          Version 2.1
+          Version 2.2
         </div>
         <div class="sb-head" style="margin-bottom:10px">
           <div class="row-ico">
@@ -976,7 +975,7 @@ body.dark .device-item.this-device .dv-ico{background:rgba(255,255,255,.14)}
           floating glass panels, gentle motion, soft color, and nothing that gets in the way of your thoughts.
           <br><br>
           Under the surface it stays private by default, and now it can sync between your phone and computer
-          using your own GitHub account — no middleman, no ads, no tracking.
+          with just a short code — no accounts, no servers, no tracking.
         </p>
       </div>
     </div>
@@ -988,7 +987,7 @@ body.dark .device-item.this-device .dv-ico{background:rgba(255,255,255,.14)}
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M12 3v18"/><path d="m5 8 7-5 7 5"/><path d="M5 16l7 5 7-5"/>
           </svg>
-          Version 2.1 · What's new
+          Version 2.2 · What's new
         </div>
         <div class="sb-head" style="margin-bottom:12px">
           <div class="row-ico">
@@ -997,15 +996,15 @@ body.dark .device-item.this-device .dv-ico{background:rgba(255,255,255,.14)}
               <path d="M4.5 4.5l2 2M17.5 17.5l2 2M4.5 19.5l2-2M17.5 6.5l2-2" opacity=".55"/>
             </svg>
           </div>
-          <div><h4>The 2.1 Update</h4><p>Real cloud sync between phone and computer</p></div>
+          <div><h4>The 2.2 Update</h4><p>Sync with one short code — nothing else to set up</p></div>
         </div>
         <ul class="update-list">
-          <li><span class="up-dot"></span><span><b>Real cloud sync.</b> Your notes are saved to your own private GitHub Gist — free, private, no server of ours.</span></li>
-          <li><span class="up-dot"></span><span><b>Link phone &amp; computer.</b> Paste the same GitHub token on both devices and everything syncs automatically.</span></li>
-          <li><span class="up-dot"></span><span><b>Green check when linked.</b> The Devices panel shows the other device with a green check once it's synced.</span></li>
+          <li><span class="up-dot"></span><span><b>One-code sync.</b> Tap <b>Create Sync Code</b> on one device, send the code to the other, paste it, done.</span></li>
+          <li><span class="up-dot"></span><span><b>No accounts needed.</b> No GitHub, no email, no token — just a short random code.</span></li>
+          <li><span class="up-dot"></span><span><b>Green check when linked.</b> The Devices panel shows the other device with a green check once synced.</span></li>
           <li><span class="up-dot"></span><span><b>Auto-merge.</b> Edits on one device flow to the other without overwriting — newest wins, per note.</span></li>
+          <li><span class="up-dot"></span><span><b>Auto push &amp; pull.</b> Changes push a few seconds after you make them, and pull when you return.</span></li>
           <li><span class="up-dot"></span><span><b>Sign in from Phone or Computer.</b> Tell the app which device you're on so the Devices panel is accurate.</span></li>
-          <li><span class="up-dot"></span><span><b>Sign in with email or username.</b> Either works, as long as the password matches.</span></li>
           <li><span class="up-dot"></span><span><b>Pin, download &amp; share notes.</b> Long-press any note card for the full action menu.</span></li>
         </ul>
       </div>
@@ -1014,56 +1013,34 @@ body.dark .device-item.this-device .dv-ico{background:rgba(255,255,255,.14)}
     <p class="sec-title">How it works</p>
     <div class="panel">
       <div class="row">
-        <div class="row-ico">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
-            <rect x="4" y="3" width="16" height="18" rx="2.5"/><path d="M9 18h6"/>
-          </svg>
-        </div>
-        <div class="row-txt"><h4>Everything stays on your device</h4><p>Notes are saved in your browser's local storage — and to your own GitHub gist.</p></div>
+        <div class="row-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="2.5"/><path d="M9 18h6"/></svg></div>
+        <div class="row-txt"><h4>Everything stays on your device</h4><p>Notes live in your browser's local storage — and sync through your own code.</p></div>
       </div>
       <div class="row">
-        <div class="row-ico">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M17.5 19a4.5 4.5 0 0 0 0-9 6.5 6.5 0 0 0-12.7-1.7A4 4 0 0 0 6 19h11.5Z"/>
-          </svg>
-        </div>
-        <div class="row-txt"><h4>Cloud sync via GitHub</h4><p>Your notes go into your own private gist — under your account, under your control.</p></div>
+        <div class="row-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></div>
+        <div class="row-txt"><h4>Sync with a code</h4><p>Your notes are stored in a random, private JSON blob on the web — reachable only with your code.</p></div>
       </div>
       <div class="row">
-        <div class="row-ico">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M21 12a9 9 0 1 1-3-6.7"/><path d="M21 4v5h-5"/>
-          </svg>
-        </div>
-        <div class="row-txt"><h4>Saves as you write</h4><p>Local save is instant. Cloud push happens automatically after a few seconds.</p></div>
+        <div class="row-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-3-6.7"/><path d="M21 4v5h-5"/></svg></div>
+        <div class="row-txt"><h4>Saves as you write</h4><p>Local save is instant. Sync pushes a few seconds after you make a change.</p></div>
       </div>
       <div class="row">
-        <div class="row-ico">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
-            <rect x="4" y="10" width="16" height="10" rx="2.5"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/><path d="M12 14v2"/>
-          </svg>
-        </div>
-        <div class="row-txt"><h4>Private by design</h4><p>Passwords are hashed locally. Your GitHub token never leaves your device except to talk to GitHub.</p></div>
+        <div class="row-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="10" rx="2.5"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/><path d="M12 14v2"/></svg></div>
+        <div class="row-txt"><h4>Private by design</h4><p>Passwords stay on-device. The sync code is the only key to your notebook.</p></div>
       </div>
     </div>
 
     <p class="sec-title">Credits</p>
     <div class="panel">
       <div class="row" style="cursor:default">
-        <div class="row-ico">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="m8 6-6 6 6 6"/><path d="m16 6 6 6-6 6"/></svg>
-        </div>
+        <div class="row-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="m8 6-6 6 6 6"/><path d="m16 6 6 6-6 6"/></svg></div>
         <div class="row-txt">
           <h4 style="white-space:normal">only</h4>
           <p style="white-space:normal">Wrote the code — and only the code. Every line of it.</p>
         </div>
       </div>
       <div class="row" style="cursor:default">
-        <div class="row-ico">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M9 18h6"/><path d="M10 22h4"/><path d="M12 2a7 7 0 0 0-4 12.7V18h8v-3.3A7 7 0 0 0 12 2Z"/>
-          </svg>
-        </div>
+        <div class="row-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M12 2a7 7 0 0 0-4 12.7V18h8v-3.3A7 7 0 0 0 12 2Z"/></svg></div>
         <div class="row-txt">
           <h4 style="white-space:normal">Elysia</h4>
           <p style="white-space:normal">The owner of the ideas behind the site.</p>
@@ -1073,7 +1050,7 @@ body.dark .device-item.this-device .dv-ico{background:rgba(255,255,255,.14)}
 
     <p class="about-foot">
       Made with <span class="credit-heart">♥</span> and a lot of glass.<br>
-      Your notes are yours — even in the cloud.
+      Your notes are yours — always.
     </p>
   </section>
 </div>
@@ -1319,10 +1296,10 @@ body.dark .device-item.this-device .dv-ico{background:rgba(255,255,255,.14)}
 var K_USERS   = 'gn_users_v5';
 var K_SESSION = 'gn_session_v5';
 var K_STYLE   = 'gn_style_v5';
-var K_CLOUD   = 'gn_cloud_v5';
+var K_SYNC    = 'gn_sync_v5';
 var K_NOTES   = function(u){ return 'gn_notes_v5_' + u; };
 var MAX_PINNED = 3;
-var GIST_FILE = 'glass-notes-sync.json';
+var SYNC_API = 'https://jsonblob.com/api/jsonBlob';
 
 function load(k, fb){
   try { var v = JSON.parse(localStorage.getItem(k)); return (v === null || v === undefined) ? fb : v; }
@@ -1467,9 +1444,9 @@ function getFontStack(name){
 var WEIGHT_NAMES = { '300':'Light', '400':'Regular', '600':'Semi-bold', '700':'Bold', '800':'Black' };
 
 /* ================= TERMS CONTENT ================= */
-var TERMS_TEXT = '<h4>1. Acceptance</h4><p>By creating an account you agree to use Glass Notes responsibly and lawfully. This app stores your notes locally on your own device.</p><h4>2. Your Content</h4><p>All notes, titles, and content you create belong to you. When cloud sync is enabled, your notes are stored in a private gist under your own GitHub account.</p><h4>3. Account</h4><p>You are responsible for keeping your password and GitHub token safe.</p><h4>4. No Warranty</h4><p>Glass Notes is provided "as is" without any warranty. Please use Export regularly to back up your notes.</p><h4>5. Changes</h4><p>These terms may be updated in future versions.</p>';
+var TERMS_TEXT = '<h4>1. Acceptance</h4><p>By creating an account you agree to use Glass Notes responsibly and lawfully. This app stores your notes locally on your own device.</p><h4>2. Your Content</h4><p>All notes, titles, and content you create belong to you.</p><h4>3. Account</h4><p>You are responsible for keeping your password safe.</p><h4>4. No Warranty</h4><p>Glass Notes is provided "as is" without any warranty.</p><h4>5. Changes</h4><p>These terms may be updated in future versions.</p>';
 
-var PRIVACY_TEXT = '<h4>Your Privacy Matters</h4><p>Glass Notes is designed to be private by default.</p><h4>What we store</h4><ul><li>Your username and a secure hash of your password (local only)</li><li>Your notes, titles, and formatting</li><li>Your display preferences</li></ul><h4>Where it is stored</h4><p>Everything is stored in your browser\'s <b>localStorage</b> on this exact device. If you enable Cloud Sync, your notes are additionally stored in a <b>private GitHub Gist</b> that belongs to your GitHub account.</p><h4>Your GitHub token</h4><p>Your token is stored only on this device (localStorage) and is only used to talk to GitHub. It never goes anywhere else.</p><h4>No trackers</h4><p>No analytics, no ads, no cookies, no third-party scripts.</p>';
+var PRIVACY_TEXT = '<h4>Your Privacy Matters</h4><p>Glass Notes is designed to be private by default.</p><h4>What we store</h4><ul><li>Your username and a secure hash of your password (local only)</li><li>Your notes, titles, and formatting</li><li>Your display preferences</li></ul><h4>Where it is stored</h4><p>Everything is stored in your browser\'s <b>localStorage</b> on this exact device. When you enable Sync, your notes are also stored in an anonymous JSON blob reachable only with your random sync code.</p><h4>No trackers</h4><p>No analytics, no ads, no cookies, no third-party scripts.</p>';
 
 /* ================= STATE ================= */
 var state = {
@@ -1489,8 +1466,7 @@ if (!state.style.noteSize) state.style.noteSize = 15;
 if (!state.style.noteZoom) state.style.noteZoom = 100;
 if (typeof state.style.lined !== 'boolean') state.style.lined = false;
 
-var cloud = load(K_CLOUD, { token: '', gistId: '', lastSync: 0, autoSync: true, remoteDevices: { phone:false, computer:false } });
-if (!cloud.remoteDevices) cloud.remoteDevices = { phone:false, computer:false };
+var syncState = load(K_SYNC, { code: '', lastSync: 0, autoSync: true });
 
 /* ================= STYLE ================= */
 var ACCENT_SWATCHES = ['#6b5cff','#3b82f6','#06b6d4','#10b981','#f59e0b','#ef4444','#ec4899','#8b5cf6','#64748b','#0f172a'];
@@ -1685,53 +1661,7 @@ function openTermsModal(kind){
 }
 function closeTermsModal(){ var m = $('#termsModal'); if (m) m.classList.remove('open'); }
 
-/* ================= CLOUD SYNC (GitHub Gist) ================= */
-function ghHeaders(token){
-  return { 'Authorization': 'Bearer ' + token, 'Accept': 'application/vnd.github+json', 'Content-Type': 'application/json' };
-}
-async function ghRequest(method, path, token, body){
-  var opts = { method: method, headers: ghHeaders(token) };
-  if (body) opts.body = JSON.stringify(body);
-  var r = await fetch('https://api.github.com' + path, opts);
-  if (!r.ok){
-    var msg = 'HTTP ' + r.status;
-    try { var j = await r.json(); if (j && j.message) msg = j.message; } catch(e){}
-    throw new Error(msg);
-  }
-  return r.json();
-}
-function cloudPayload(){
-  var devices = Object.assign({ phone: false, computer: false }, cloud.remoteDevices || {});
-  devices[state.currentDevice] = true;
-  return {
-    version: 2,
-    owner: state.user ? (state.user.email || state.user.username) : 'guest',
-    updated: Date.now(),
-    devices: devices,
-    notes: state.notes
-  };
-}
-function setCloudStatus(text, kind){
-  var el = $('#cloudStatusTxt'); if (el) el.textContent = text;
-  var badge = $('#cloudBadge');
-  if (badge){
-    badge.classList.remove('ok','err','loading');
-    if (kind) badge.classList.add(kind);
-    if (kind === 'ok') badge.textContent = 'Linked';
-    else if (kind === 'err') badge.textContent = 'Error';
-    else if (kind === 'loading') badge.textContent = '…';
-    else badge.textContent = '';
-  }
-}
-function renderCloudUI(){
-  var el = $('#cloudToken');
-  if (el && cloud.token && !el.value) el.value = cloud.token;
-  if (cloud.token && cloud.gistId){
-    setCloudStatus('Linked · last sync ' + (cloud.lastSync ? ago(cloud.lastSync) : 'never'), 'ok');
-  } else {
-    setCloudStatus('Not connected', null);
-  }
-}
+/* ================= QUICK SYNC (jsonblob) ================= */
 function mergeNotes(local, remote){
   var map = new Map();
   (remote || []).forEach(function(n){ if (n && n.id) map.set(n.id, n); });
@@ -1742,136 +1672,164 @@ function mergeNotes(local, remote){
   });
   return Array.from(map.values());
 }
-async function cloudLink(){
-  if (!requireAuth('sync notes')) return;
-  var tokenEl = $('#cloudToken');
-  var token = (tokenEl && tokenEl.value || '').trim();
-  if (!token){ toast('Please paste your GitHub token', true); return; }
-  if (token.length < 20){ toast('That token looks too short', true); return; }
-  setCloudStatus('Connecting…', 'loading');
-  try {
-    var gists = await ghRequest('GET', '/gists?per_page=100', token);
-    var found = null;
-    for (var i = 0; i < (gists || []).length; i++){
-      var g = gists[i];
-      if (g.files && g.files[GIST_FILE]){ found = g; break; }
-    }
-    if (found){
-      var file = found.files[GIST_FILE];
-      var content = file.content;
-      if (file.truncated && file.raw_url){
-        var r = await fetch(file.raw_url);
-        content = await r.text();
-      }
-      var data = JSON.parse(content);
-      var remoteNotes = data.notes || [];
-      var before = state.notes.length;
-      state.notes = mergeNotes(state.notes, remoteNotes);
-      if (data.devices) cloud.remoteDevices = data.devices;
-      cloud.token = token;
-      cloud.gistId = found.id;
-      cloud.lastSync = Date.now();
-      save(K_CLOUD, cloud);
-      persist();
-      renderAll();
-      toast('Linked — ' + (state.notes.length - before) + ' note(s) pulled');
-    } else {
-      var payload = {
-        description: 'Glass Notes Sync — ' + (state.user.email || state.user.username),
-        public: false,
-        files: {}
-      };
-      payload.files[GIST_FILE] = { content: JSON.stringify(cloudPayload(), null, 2) };
-      var created = await ghRequest('POST', '/gists', token, payload);
-      cloud.token = token;
-      cloud.gistId = created.id;
-      cloud.lastSync = Date.now();
-      save(K_CLOUD, cloud);
-      toast('Cloud backup created');
-    }
-    if (state.userKey){
-      var users = load(K_USERS, {});
-      var u = users[state.userKey];
-      if (u){
-        u.cloudLinked = true;
-        if (!u.linkedDevices) u.linkedDevices = { phone:false, computer:false };
-        u.linkedDevices[state.currentDevice] = true;
-        users[state.userKey] = u;
-        state.user = u;
-        save(K_USERS, users);
-      }
-    }
-    renderCloudUI();
-    renderConnectedDevices();
-  } catch(err){
-    console.error('Cloud link failed', err);
-    setCloudStatus('Failed: ' + err.message, 'err');
-    toast('Link failed: ' + err.message, true);
+
+function setSyncStatus(text, kind){
+  var t = $('#syncStatusTxt'); if (t) t.textContent = text;
+  var b = $('#syncBadge'); if (!b) return;
+  b.classList.remove('ok','err','loading');
+  if (kind) b.classList.add(kind);
+  b.textContent = kind === 'ok' ? 'Linked' : kind === 'err' ? 'Error' : kind === 'loading' ? '…' : '';
+}
+
+function renderSyncUI(){
+  var connected = !!syncState.code;
+  var nc = $('#syncNotConnected'); if (nc) nc.classList.toggle('hidden', connected);
+  var c  = $('#syncConnected');   if (c)  c.classList.toggle('hidden', !connected);
+  var disp = $('#syncCodeDisplay'); if (disp) disp.value = syncState.code || '';
+  if (connected){
+    setSyncStatus('Linked · last sync ' + (syncState.lastSync ? ago(syncState.lastSync) : 'never'), 'ok');
+  } else {
+    setSyncStatus('Not connected', null);
   }
 }
-async function cloudPush(){
-  if (!cloud.token || !cloud.gistId) return;
-  var payload = { files: {} };
-  payload.files[GIST_FILE] = { content: JSON.stringify(cloudPayload(), null, 2) };
-  await ghRequest('PATCH', '/gists/' + cloud.gistId, cloud.token, payload);
-  cloud.lastSync = Date.now();
-  save(K_CLOUD, cloud);
+
+async function createSyncCode(){
+  if (!requireAuth('sync notes')) return;
+  setSyncStatus('Creating…', 'loading');
+  try {
+    var res = await fetch(SYNC_API, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ notes: state.notes, created: Date.now(), updated: Date.now() })
+    });
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    var loc = res.headers.get('Location');
+    if (!loc) throw new Error('No code returned');
+    var id = loc.split('/').pop();
+    syncState.code = id;
+    syncState.lastSync = Date.now();
+    save(K_SYNC, syncState);
+    renderSyncUI();
+    renderConnectedDevices();
+    copyText(id, true);
+    toast('Sync code created & copied!');
+  } catch(err){
+    console.error(err);
+    setSyncStatus('Failed: ' + err.message, 'err');
+    toast('Could not create code', true);
+  }
 }
-async function cloudPull(){
-  if (!cloud.token || !cloud.gistId) return 0;
-  var gist = await ghRequest('GET', '/gists/' + cloud.gistId, cloud.token);
-  var file = gist.files && gist.files[GIST_FILE];
-  if (!file) throw new Error('No sync file found');
-  var content = file.content;
-  if (file.truncated && file.raw_url) content = await (await fetch(file.raw_url)).text();
-  var data = JSON.parse(content);
+
+async function connectWithCode(){
+  if (!requireAuth('sync notes')) return;
+  var inp = $('#syncCodeInput');
+  var code = (inp && inp.value || '').trim();
+  if (!code){ toast('Please paste a code first', true); return; }
+  setSyncStatus('Connecting…', 'loading');
+  try {
+    var res = await fetch(SYNC_API + '/' + encodeURIComponent(code));
+    if (!res.ok) throw new Error('Code not found');
+    var data = await res.json();
+    var remoteNotes = data.notes || [];
+    var before = state.notes.length;
+    state.notes = mergeNotes(state.notes, remoteNotes);
+    syncState.code = code;
+    syncState.lastSync = Date.now();
+    save(K_SYNC, syncState);
+    persist();
+    renderAll();
+    renderSyncUI();
+    renderConnectedDevices();
+    if (inp) inp.value = '';
+    var added = Math.max(0, state.notes.length - before);
+    toast(added > 0 ? ('Connected — ' + added + ' new note(s)') : 'Connected!');
+    setTimeout(pushSync, 500);
+  } catch(err){
+    console.error(err);
+    setSyncStatus('Failed: ' + err.message, 'err');
+    toast('Invalid code', true);
+  }
+}
+
+async function pushSync(){
+  if (!syncState.code) return;
+  try {
+    await fetch(SYNC_API + '/' + encodeURIComponent(syncState.code), {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ notes: state.notes, updated: Date.now() })
+    });
+    syncState.lastSync = Date.now();
+    save(K_SYNC, syncState);
+    renderSyncUI();
+  } catch(err){
+    console.warn('Sync push failed', err);
+  }
+}
+
+async function pullSync(){
+  if (!syncState.code) return 0;
+  var res = await fetch(SYNC_API + '/' + encodeURIComponent(syncState.code));
+  if (!res.ok) throw new Error('HTTP ' + res.status);
+  var data = await res.json();
   var remoteNotes = data.notes || [];
-  if (data.devices) cloud.remoteDevices = data.devices;
   var before = state.notes.length;
   state.notes = mergeNotes(state.notes, remoteNotes);
   persist();
   renderAll();
-  cloud.lastSync = Date.now();
-  save(K_CLOUD, cloud);
+  syncState.lastSync = Date.now();
+  save(K_SYNC, syncState);
   return state.notes.length - before;
 }
-async function cloudSyncNow(){
-  if (!cloud.token || !cloud.gistId){ toast('Not linked yet', true); return; }
-  setCloudStatus('Syncing…', 'loading');
+
+async function syncNow(){
+  if (!syncState.code){ toast('Not connected yet', true); return; }
+  setSyncStatus('Syncing…', 'loading');
   try {
-    var added = await cloudPull();
-    await cloudPush();
-    renderCloudUI();
+    var added = await pullSync();
+    await pushSync();
+    renderSyncUI();
     renderConnectedDevices();
     toast(added > 0 ? ('Synced — ' + added + ' new') : 'Synced');
   } catch(err){
     console.error(err);
-    setCloudStatus('Sync failed: ' + err.message, 'err');
+    setSyncStatus('Sync failed', 'err');
     toast('Sync failed', true);
   }
 }
-function cloudDisconnect(){
-  if (!confirm('Disconnect cloud sync? Your notes stay on this device.')) return;
-  cloud.token = ''; cloud.gistId = ''; cloud.lastSync = 0;
-  cloud.remoteDevices = { phone:false, computer:false };
-  save(K_CLOUD, cloud);
-  var el = $('#cloudToken'); if (el) el.value = '';
-  if (state.userKey){
-    var users = load(K_USERS, {});
-    var u = users[state.userKey];
-    if (u){ u.cloudLinked = false; users[state.userKey] = u; state.user = u; save(K_USERS, users); }
-  }
-  renderCloudUI();
+
+function disconnectSync(){
+  if (!confirm('Disconnect? Your notes stay on this device.')) return;
+  syncState.code = '';
+  syncState.lastSync = 0;
+  save(K_SYNC, syncState);
+  renderSyncUI();
   renderConnectedDevices();
   toast('Disconnected');
 }
-var cloudPushTimer = null;
-function scheduleCloudPush(){
-  if (!cloud.autoSync || !cloud.token || !cloud.gistId) return;
-  clearTimeout(cloudPushTimer);
-  cloudPushTimer = setTimeout(function(){
-    cloudPush().then(function(){ renderCloudUI(); }).catch(function(err){ console.warn('Cloud push failed', err); });
-  }, 5000);
+
+function copyText(text, silent){
+  if (navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(text).then(function(){
+      if (!silent) toast('Copied');
+    }).catch(function(){ legacyCopy(text, silent); });
+  } else legacyCopy(text, silent);
+}
+function legacyCopy(text, silent){
+  var ta = document.createElement('textarea');
+  ta.value = text; ta.setAttribute('readonly', '');
+  ta.style.position = 'fixed'; ta.style.top = '-9999px'; ta.style.opacity = '0';
+  document.body.appendChild(ta); ta.select();
+  var ok = false; try { ok = document.execCommand('copy'); } catch(e){ ok = false; }
+  document.body.removeChild(ta);
+  if (ok && !silent) toast('Copied');
+}
+
+var syncPushTimer = null;
+function scheduleSyncPush(){
+  if (!syncState.autoSync || !syncState.code) return;
+  clearTimeout(syncPushTimer);
+  syncPushTimer = setTimeout(pushSync, 4000);
 }
 
 /* ================= AUTH ================= */
@@ -1944,7 +1902,6 @@ function handleAuthSubmit(){
         username: u, displayName: u, email: em, bio: '', avatar: '',
         pass: hash(p), created: Date.now(),
         linkedDevices: { phone:false, computer:false },
-        cloudLinked: false,
         lastDevice: null
       };
       if (!save(K_USERS, users)) return showErr('Could not save. Storage may be full.');
@@ -1995,10 +1952,9 @@ function loginAs(key, isNew){
   var fp = $('#fPass'); if (fp) fp.value = '';
   var name = u.displayName || u.username;
   toast(isNew ? ('Welcome, ' + name) : ('Welcome back, ' + name));
-  /* Auto pull from cloud if already linked */
-  if (cloud.token && cloud.gistId){
+  if (syncState.code){
     setTimeout(function(){
-      cloudPull().then(function(){ renderCloudUI(); renderConnectedDevices(); }).catch(function(err){ console.warn('Auto-pull failed', err); });
+      pullSync().then(function(){ renderSyncUI(); renderConnectedDevices(); }).catch(function(err){ console.warn('Auto-pull failed', err); });
     }, 800);
   }
 }
@@ -2078,7 +2034,7 @@ function tryAutoLogin(){
 function persist(){
   if (state.userKey && !state.viewOnly){
     save(K_NOTES(state.userKey), state.notes);
-    scheduleCloudPush();
+    scheduleSyncPush();
   }
 }
 function persistUser(){
@@ -2354,24 +2310,10 @@ function shareNoteById(id){
   var shareText = title + '\n\n' + body;
   if (navigator.share){
     try { navigator.share({ title: title, text: shareText }).catch(function(err){
-      if (err && err.name && err.name !== 'AbortError') copyToClipboard(shareText);
+      if (err && err.name && err.name !== 'AbortError') copyText(shareText, false);
     }); return; } catch(err){}
   }
-  copyToClipboard(shareText);
-}
-function copyToClipboard(text){
-  if (navigator.clipboard && navigator.clipboard.writeText){
-    navigator.clipboard.writeText(text).then(function(){ toast('Note copied to clipboard'); }).catch(function(){ legacyCopy(text); });
-  } else legacyCopy(text);
-}
-function legacyCopy(text){
-  var ta = document.createElement('textarea');
-  ta.value = text; ta.setAttribute('readonly', '');
-  ta.style.position = 'fixed'; ta.style.top = '-9999px'; ta.style.opacity = '0';
-  document.body.appendChild(ta); ta.select();
-  var ok = false; try { ok = document.execCommand('copy'); } catch(e){ ok = false; }
-  document.body.removeChild(ta);
-  if (ok) toast('Note copied to clipboard'); else toast('Could not share note', true);
+  copyText(shareText, false);
 }
 function togglePinNote(id){
   if (state.viewOnly){ requireAuth('pin notes'); return; }
@@ -2745,15 +2687,15 @@ function renderConnectedDevices(){
   var isGuest = state.viewOnly;
   var current = state.currentDevice || detectDeviceType();
   var other = current === 'phone' ? 'computer' : 'phone';
-  var isCloudActive = !!(cloud.token && cloud.gistId) && !isGuest;
+  var isSyncActive = !!syncState.code && !isGuest;
   var currentLabel = current === 'phone' ? 'This Phone' : 'This Computer';
   var otherLabel = other === 'phone' ? 'Phone' : 'Computer';
-  var otherIsLinked = isCloudActive;
+  var otherIsLinked = isSyncActive;
   var otherSub = isGuest
     ? 'Sign in to sync your notes'
     : (otherIsLinked
-        ? 'Linked — syncing through GitHub'
-        : 'Not linked yet — enable Cloud Sync');
+        ? 'Linked — sharing notes with you'
+        : 'Not linked yet — enable Sync below');
 
   function iconFor(type){ return type === 'phone' ? PHONE_ICON : COMPUTER_ICON; }
 
@@ -2793,7 +2735,7 @@ function renderSettings(){
   var ll = $('#logoutLabel'); if (ll) ll.textContent = isGuest ? 'Sign in' : 'Log out';
   var ld = $('#logoutDesc'); if (ld) ld.textContent = isGuest ? 'Access your notes' : 'Sign out of this device';
   renderConnectedDevices();
-  renderCloudUI();
+  renderSyncUI();
   applyStyle();
 }
 function openProfile(){
@@ -3136,19 +3078,15 @@ function init(){
       toast('Profile updated');
     });
 
-    /* cloud sync buttons */
-    var clb = $('#cloudLinkBtn'); if (clb) clb.addEventListener('click', cloudLink);
-    var csb = $('#cloudSyncBtn'); if (csb) csb.addEventListener('click', cloudSyncNow);
-    var cdb = $('#cloudDiscBtn'); if (cdb) cdb.addEventListener('click', cloudDisconnect);
-    var ct = $('#cloudToken');
-    if (ct){
-      ct.addEventListener('change', function(){
-        cloud.token = ct.value.trim();
-        if (!cloud.token) cloud.gistId = '';
-        save(K_CLOUD, cloud);
-        renderCloudUI();
-      });
-    }
+    /* quick sync buttons */
+    var scb = $('#syncCreateBtn'); if (scb) scb.addEventListener('click', createSyncCode);
+    var scn = $('#syncConnectBtn'); if (scn) scn.addEventListener('click', connectWithCode);
+    var snb = $('#syncNowBtn'); if (snb) snb.addEventListener('click', syncNow);
+    var sdb = $('#syncDisconnectBtn'); if (sdb) sdb.addEventListener('click', disconnectSync);
+    var scp = $('#syncCopyBtn');
+    if (scp) scp.addEventListener('click', function(){
+      if (syncState.code) copyText(syncState.code, false);
+    });
 
     /* export */
     var exp = $('#exportRow');
@@ -3203,9 +3141,9 @@ function init(){
           persist();
         }
       }
-      if (!document.hidden && cloud.token && cloud.gistId && state.userKey && !state.viewOnly){
-        cloudPull().then(function(){
-          renderCloudUI();
+      if (!document.hidden && syncState.code && state.userKey && !state.viewOnly){
+        pullSync().then(function(){
+          renderSyncUI();
           renderConnectedDevices();
         }).catch(function(err){ console.warn('Auto-pull failed', err); });
       }
@@ -3240,7 +3178,7 @@ function init(){
       requestAnimationFrame(positionTabPill);
       setTimeout(function(){ try { $('#fUser').focus(); } catch(e){} }, 600);
     }
-    renderCloudUI();
+    renderSyncUI();
   } catch(err){
     console.error('Init error:', err);
   }
