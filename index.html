@@ -341,9 +341,22 @@ body.dark .ed-content a,body.dark .nc-preview a,body.dark .note-card a{color:#7c
   box-shadow:var(--shadow-lg),var(--inner-light);opacity:0;transition:transform .7s var(--spring),opacity .5s ease}
 .dock.show{transform:translateX(-50%) translateY(0);opacity:1}
 .dock.hide{transform:translateX(-50%) translateY(140px);opacity:0;pointer-events:none}
-.dock-pill{position:absolute;top:9px;bottom:9px;left:0;width:60px;border-radius:calc(var(--r-lg) - 8px);z-index:1;
-  background:linear-gradient(180deg,var(--glass-3),var(--glass-2));border:1px solid var(--stroke-2);box-shadow:var(--shadow-sm),inset 0 1px 0 rgba(255,255,255,.4);
-  transition:transform .55s cubic-bezier(.34,1.4,.5,1),width .55s cubic-bezier(.34,1.4,.5,1);pointer-events:none;will-change:transform,width}
+.dock-pill{
+  position:absolute;
+  top:9px;bottom:9px;left:0;
+  width:60px;
+  border-radius:calc(var(--r-lg) - 8px);
+  z-index:1;
+  background:linear-gradient(180deg,var(--glass-3),var(--glass-2));
+  border:1px solid var(--stroke-2);
+  box-shadow:var(--shadow-sm),inset 0 1px 0 rgba(255,255,255,.4);
+  transition:transform .5s cubic-bezier(.34,1.4,.5,1),width .5s cubic-bezier(.34,1.4,.5,1);
+  pointer-events:none;
+  will-change:transform,width;
+  transform:translate3d(0,0,0);
+  -webkit-backface-visibility:hidden;
+  backface-visibility:hidden;
+}
 .dock button{position:relative;z-index:2;flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;
   border-radius:calc(var(--r-lg) - 8px);color:var(--text-dim);transition:color .4s var(--ease-out)}
 .dock button svg{width:21px;height:21px;transition:transform .5s var(--spring)}
@@ -640,6 +653,40 @@ body.dark .work-card-bottom{background:linear-gradient(180deg,rgba(22,24,42,.9),
   background:linear-gradient(135deg,var(--accent),var(--accent-2));box-shadow:0 4px 12px var(--accent-ring);
   text-decoration:none;transition:transform .25s var(--spring)}
 .work-author .wa-btn:active{transform:scale(.95)}
+
+/* ===================================================================
+   === محرك السلاسة — GPU-friendly motion engine ===
+   =================================================================== */
+button,.chip,.swatch,.color-swatch,.font-chip,.ft-btn,.icon-btn,
+.mini-btn,.fab,.btn-primary,.row,.note-card,.note-card-wrap,.letter,
+.dock button,.dock-pill,.zoom-btn,.fp-close,.skip-btn,.tabs button,
+.seg-control button,.device-seg button,.lang-chip,.work-card,
+.sound-toggle-btn,.sound-toggle{
+  touch-action:manipulation;
+}
+
+.dock-pill,.sheet-inner,.format-panel,.pin-menu,.select-bar,.toast,
+.viewonly-bar,.view{
+  -webkit-backface-visibility:hidden;
+  backface-visibility:hidden;
+}
+
+.view.from-right.active{animation-duration:.42s}
+.view.from-left.active{animation-duration:.42s}
+.view.leaving.to-left{animation-duration:.36s}
+.view.leaving.to-right{animation-duration:.36s}
+
+@keyframes cardIn{
+  from{opacity:0;transform:translate3d(0,14px,0) scale(.96)}
+  to{opacity:1;transform:translate3d(0,0,0) scale(1)}
+}
+.note-card-wrap{animation-duration:.42s}
+
+@keyframes pinMenuIn{
+  from{opacity:0;transform:scale(.88) translate3d(0,-4px,0)}
+  to{opacity:1;transform:scale(1) translate3d(0,0,0)}
+}
+.pin-menu{animation-duration:.26s}
 </style>
 </head>
 <body>
@@ -905,6 +952,61 @@ body.dark .work-card-bottom{background:linear-gradient(180deg,rgba(22,24,42,.9),
       </div>
     </div>
 
+    <p class="sec-title" data-i18n="techTitle">Technology</p>
+    <div class="panel">
+      <div class="style-block">
+        <div class="about-badge">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m8 6-6 6 6 6"/><path d="m16 6 6 6-6 6"/></svg>
+          <span data-i18n="techBadge">Built with</span>
+        </div>
+        <ul class="update-list">
+          <li><span class="up-dot"></span><span><b data-i18n="techVanillaTitle">Vanilla JS.</b> <span data-i18n="techVanillaBody">Pure HTML, CSS and JavaScript — no frameworks, no dependencies, no build step. Loads in milliseconds.</span></span></li>
+          <li><span class="up-dot"></span><span><b data-i18n="techAudioTitle">Web Audio API.</b> <span data-i18n="techAudioBody">Five soft synthesized sounds generated in real-time — no audio files needed.</span></span></li>
+          <li><span class="up-dot"></span><span><b data-i18n="techStorageTitle">localStorage.</b> <span data-i18n="techStorageBody">All notes and settings stay on your device. Nothing ever leaves it.</span></span></li>
+          <li><span class="up-dot"></span><span><b data-i18n="techGlassTitle">Frosted glass.</b> <span data-i18n="techGlassBody">Real backdrop-filter blur with layered transparency for depth and calm.</span></span></li>
+          <li><span class="up-dot"></span><span><b data-i18n="techI18nTitle">Custom i18n.</b> <span data-i18n="techI18nBody">Five languages with automatic RTL switching — all in one small bundle.</span></span></li>
+          <li><span class="up-dot"></span><span><b data-i18n="techPointerTitle">Pointer Events.</b> <span data-i18n="techPointerBody">Unified touch, mouse and pen input for long-press, swipe and pinch gestures.</span></span></li>
+        </ul>
+      </div>
+    </div>
+
+    <p class="sec-title" data-i18n="animTitle">Animations</p>
+    <div class="panel">
+      <div class="style-block">
+        <div class="about-badge">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+          <span data-i18n="animBadge">Motion system</span>
+        </div>
+        <ul class="update-list">
+          <li><span class="up-dot"></span><span><b data-i18n="animSpringTitle">Spring physics.</b> <span data-i18n="animSpringBody">Custom cubic-bezier curves that overshoot naturally, like iOS and Telegram.</span></span></li>
+          <li><span class="up-dot"></span><span><b data-i18n="animViewTitle">View transitions.</b> <span data-i18n="animViewBody">Pages slide, blur and fade simultaneously for a soft, cinematic feel.</span></span></li>
+          <li><span class="up-dot"></span><span><b data-i18n="animCardTitle">Card choreography.</b> <span data-i18n="animCardBody">Notes cascade in with a subtle stagger delay — never all at once.</span></span></li>
+          <li><span class="up-dot"></span><span><b data-i18n="animDockTitle">Dock pill spring.</b> <span data-i18n="animDockBody">The highlight glides between tabs with spring overshoot and width morphing.</span></span></li>
+          <li><span class="up-dot"></span><span><b data-i18n="animBlurTitle">Motion blur.</b> <span data-i18n="animBlurBody">Transitions add a soft blur that dissolves — motion feels physical, not digital.</span></span></li>
+          <li><span class="up-dot"></span><span><b data-i18n="animPinTitle">Pin &amp; select.</b> <span data-i18n="animPinBody">Long-press reveals a spring pop menu; selection scales cards down with a soft blur halo.</span></span></li>
+          <li><span class="up-dot"></span><span><b data-i18n="animOrbsTitle">Floating orbs.</b> <span data-i18n="animOrbsBody">Three blurred color orbs drift slowly in the background — the room never sits still.</span></span></li>
+        </ul>
+      </div>
+    </div>
+
+    <p class="sec-title" data-i18n="perfTitle">Performance</p>
+    <div class="panel">
+      <div class="style-block">
+        <div class="about-badge">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+          <span data-i18n="perfBadge">Smooth at 60fps</span>
+        </div>
+        <ul class="update-list">
+          <li><span class="up-dot"></span><span><b data-i18n="perfGpuTitle">GPU layers.</b> <span data-i18n="perfGpuBody">All animations use transform and opacity only — they never trigger layout or paint.</span></span></li>
+          <li><span class="up-dot"></span><span><b data-i18n="perfContainTitle">CSS containment.</b> <span data-i18n="perfContainBody">Each card and section is isolated, so the browser only re-renders what changed.</span></span></li>
+          <li><span class="up-dot"></span><span><b data-i18n="perfPassiveTitle">Passive events.</b> <span data-i18n="perfPassiveBody">Touch and scroll listeners never block the main thread.</span></span></li>
+          <li><span class="up-dot"></span><span><b data-i18n="perfDebounceTitle">Debounced work.</b> <span data-i18n="perfDebounceBody">Search, resize, typography and settings all throttle their updates smartly.</span></span></li>
+          <li><span class="up-dot"></span><span><b data-i18n="perfCvTitle">Content visibility.</b> <span data-i18n="perfCvBody">Off-screen note cards pause their rendering — big lists stay fast.</span></span></li>
+          <li><span class="up-dot"></span><span><b data-i18n="perfReducedTitle">Reduced motion.</b> <span data-i18n="perfReducedBody">Respects the system preference and disables heavy animation when requested.</span></span></li>
+        </ul>
+      </div>
+    </div>
+
     <p class="sec-title" data-i18n="updatesTitle">Updates</p>
     <div class="panel">
       <div class="style-block">
@@ -919,6 +1021,7 @@ body.dark .work-card-bottom{background:linear-gradient(180deg,rgba(22,24,42,.9),
           <li><span class="up-dot"></span><span><b data-i18n="u5Title">Default radius is 40px.</b> <span data-i18n="u5Body">Softer, calmer shapes everywhere — adjustable any time.</span></span></li>
           <li><span class="up-dot"></span><span><b data-i18n="u6Title">My Work section.</b> <span data-i18n="u6Body">Beautiful cards for the other projects, with one tap to open.</span></span></li>
           <li><span class="up-dot"></span><span><b data-i18n="u7Title">Site protection.</b> <span data-i18n="u7Body">Login rate limiting and safer copy behaviour.</span></span></li>
+          <li><span class="up-dot"></span><span><b data-i18n="u8Title">Pixel-perfect dock.</b> <span data-i18n="u8Body">The highlight pill now aligns to the sub-pixel on every phone.</span></span></li>
         </ul>
       </div>
     </div>
@@ -1258,7 +1361,30 @@ var TRANSLATIONS = {
     u5Title:'Default radius is 40px.', u5Body:'Softer, calmer shapes everywhere — adjustable any time.',
     u6Title:'My Work section.', u6Body:'Beautiful cards for the other projects, with one tap to open.',
     u7Title:'Site protection.', u7Body:'Login rate limiting and safer copy behaviour.',
+    u8Title:'Pixel-perfect dock.', u8Body:'The highlight pill now aligns to the sub-pixel on every phone.',
     creditsTitle:'Credits', creditOnly:'Wrote the code — every line of it.', creditElysia:'The owner of the ideas behind the site.',
+    techTitle:'Technology', techBadge:'Built with',
+    techVanillaTitle:'Vanilla JS.', techVanillaBody:'Pure HTML, CSS and JavaScript — no frameworks, no dependencies, no build step. Loads in milliseconds.',
+    techAudioTitle:'Web Audio API.', techAudioBody:'Five soft synthesized sounds generated in real-time — no audio files needed.',
+    techStorageTitle:'localStorage.', techStorageBody:'All notes and settings stay on your device. Nothing ever leaves it.',
+    techGlassTitle:'Frosted glass.', techGlassBody:'Real backdrop-filter blur with layered transparency for depth and calm.',
+    techI18nTitle:'Custom i18n.', techI18nBody:'Five languages with automatic RTL switching — all in one small bundle.',
+    techPointerTitle:'Pointer Events.', techPointerBody:'Unified touch, mouse and pen input for long-press, swipe and pinch gestures.',
+    animTitle:'Animations', animBadge:'Motion system',
+    animSpringTitle:'Spring physics.', animSpringBody:'Custom cubic-bezier curves that overshoot naturally, like iOS and Telegram.',
+    animViewTitle:'View transitions.', animViewBody:'Pages slide, blur and fade simultaneously for a soft, cinematic feel.',
+    animCardTitle:'Card choreography.', animCardBody:'Notes cascade in with a subtle stagger delay — never all at once.',
+    animDockTitle:'Dock pill spring.', animDockBody:'The highlight glides between tabs with spring overshoot and width morphing.',
+    animBlurTitle:'Motion blur.', animBlurBody:'Transitions add a soft blur that dissolves — motion feels physical, not digital.',
+    animPinTitle:'Pin & select.', animPinBody:'Long-press reveals a spring pop menu; selection scales cards down with a soft blur halo.',
+    animOrbsTitle:'Floating orbs.', animOrbsBody:'Three blurred color orbs drift slowly in the background — the room never sits still.',
+    perfTitle:'Performance', perfBadge:'Smooth at 60fps',
+    perfGpuTitle:'GPU layers.', perfGpuBody:'All animations use transform and opacity only — they never trigger layout or paint.',
+    perfContainTitle:'CSS containment.', perfContainBody:'Each card and section is isolated, so the browser only re-renders what changed.',
+    perfPassiveTitle:'Passive events.', perfPassiveBody:'Touch and scroll listeners never block the main thread.',
+    perfDebounceTitle:'Debounced work.', perfDebounceBody:'Search, resize, typography and settings all throttle their updates smartly.',
+    perfCvTitle:'Content visibility.', perfCvBody:'Off-screen note cards pause their rendering — big lists stay fast.',
+    perfReducedTitle:'Reduced motion.', perfReducedBody:'Respects the system preference and disables heavy animation when requested.',
     aboutFoot:'Made with ♥ and a lot of glass.<br>Your notes are yours — always.',
     navHome:'Home', navSearch:'Search', navTrash:'Trash', navSettings:'Settings', navAbout:'About',
     editing:'Editing', formatTitle:'Format', tbAbove:'Above', tbLines:'Lines', tbList:'List', tbClear:'Clear',
@@ -1314,7 +1440,30 @@ var TRANSLATIONS = {
     u5Title:'الاستدارة الافتراضية 40 بكسل.', u5Body:'أشكال أنعم وأهدأ في كل مكان — قابلة للتعديل في أي وقت.',
     u6Title:'قسم أعمالي.', u6Body:'بطاقات جميلة للمشاريع الأخرى، بضغطة واحدة للفتح.',
     u7Title:'حماية للموقع.', u7Body:'تحديد معدل تسجيل الدخول وسلوك نسخ أكثر أماناً.',
+    u8Title:'مستطيل تنقل مضبوط.', u8Body:'مؤشر التنقل السفلي أصبح متطابقاً على البكسل الفرعي في كل هاتف.',
     creditsTitle:'الاعتمادات', creditOnly:'كتب الكود — كل سطر منه.', creditElysia:'صاحبة الأفكار وراء الموقع.',
+    techTitle:'التقنيات', techBadge:'مبني بـ',
+    techVanillaTitle:'جافاسكربت خالصة.', techVanillaBody:'HTML و CSS و JavaScript فقط — بدون أطر عمل، بدون مكتبات، بدون خطوة بناء. يفتح في أجزاء من الثانية.',
+    techAudioTitle:'Web Audio API.', techAudioBody:'خمسة أصوات ناعمة تُولَّد لحظياً — بدون أي ملفات صوتية.',
+    techStorageTitle:'localStorage.', techStorageBody:'كل الملاحظات والإعدادات تبقى على جهازك. لا شيء يغادره أبداً.',
+    techGlassTitle:'زجاج مصنفر.', techGlassBody:'تأثير backdrop-filter حقيقي مع شفافية متعددة الطبقات للعمق والهدوء.',
+    techI18nTitle:'نظام ترجمة مخصص.', techI18nBody:'خمس لغات مع تبديل تلقائي لاتجاه RTL — في حزمة واحدة صغيرة.',
+    techPointerTitle:'Pointer Events.', techPointerBody:'إدخال موحد للمس والفأرة والقلم للضغط المطول والسحب والقرص.',
+    animTitle:'الانميشنات', animBadge:'نظام الحركة',
+    animSpringTitle:'فيزياء النابض.', animSpringBody:'منحنيات cubic-bezier مخصصة ترتد بشكل طبيعي، مثل iOS وتلجرام.',
+    animViewTitle:'انتقالات الصفحات.', animViewBody:'الصفحات تنزلق، تتضبب وتتلاشى في آن واحد لإحساس سينمائي ناعم.',
+    animCardTitle:'كوريغرافيا البطاقات.', animCardBody:'الملاحظات تظهر بتتابع ناعم — ليست كلها مرة واحدة.',
+    animDockTitle:'نابض شريط التنقل.', animDockBody:'المؤشر ينزلق بين الأزرار بتردد نابض وتحول في العرض.',
+    animBlurTitle:'ضبابية الحركة.', animBlurBody:'الانتقالات تضيف ضبابية ناعمة تتلاشى — الحركة تبدو ملموسة، لا رقمية.',
+    animPinTitle:'التثبيت والتحديد.', animPinBody:'الضغط المطول يُظهر قائمة منبثقة نابضة؛ التحديد يُصغّر البطاقات مع هالة ضبابية ناعمة.',
+    animOrbsTitle:'كرات عائمة.', animOrbsBody:'ثلاث كرات ضبابية ملونة تطفو ببطء في الخلفية — الغرفة لا تسكن أبداً.',
+    perfTitle:'الأداء', perfBadge:'سلس بـ 60 إطاراً',
+    perfGpuTitle:'طبقات GPU.', perfGpuBody:'كل الانميشنات تستعمل transform و opacity فقط — لا تُشغّل التخطيط أو الرسم.',
+    perfContainTitle:'احتواء CSS.', perfContainBody:'كل بطاقة وقسم معزول، فالمتصفح يعيد رسم ما تغير فقط.',
+    perfPassiveTitle:'مستمعات سلبية.', perfPassiveBody:'مستمعات اللمس والتمرير لا تعيق الخيط الرئيسي أبداً.',
+    perfDebounceTitle:'عمل مؤجل.', perfDebounceBody:'البحث، التغيير، الخطوط والإعدادات كلها تُنظم تحديثاتها بذكاء.',
+    perfCvTitle:'رؤية المحتوى.', perfCvBody:'البطاقات خارج الشاشة توقف رسمها — القوائم الطويلة تبقى سريعة.',
+    perfReducedTitle:'تقليل الحركة.', perfReducedBody:'يحترم تفضيل النظام ويعطّل الحركة الثقيلة عند الطلب.',
     aboutFoot:'مصنوع بـ ♥ وكثير من الزجاج.<br>ملاحظاتك ملكك — دائماً.',
     navHome:'الرئيسية', navSearch:'بحث', navTrash:'المهملات', navSettings:'الإعدادات', navAbout:'حول',
     editing:'تحرير', formatTitle:'التنسيق', tbAbove:'فوق', tbLines:'أسطر', tbList:'قائمة', tbClear:'مسح',
@@ -1370,7 +1519,30 @@ var TRANSLATIONS = {
     u5Title:'Rayon par défaut 40px.', u5Body:'Des formes plus douces partout.',
     u6Title:'Section Mon travail.', u6Body:'Belles cartes pour les autres projets.',
     u7Title:'Protection du site.', u7Body:'Limitation des connexions.',
+    u8Title:'Dock parfait au pixel.', u8Body:'Le surligneur s\'aligne désormais au sous-pixel sur chaque téléphone.',
     creditsTitle:'Crédits', creditOnly:'A écrit le code — chaque ligne.', creditElysia:'La propriétaire des idées.',
+    techTitle:'Technologie', techBadge:'Construit avec',
+    techVanillaTitle:'JS pur.', techVanillaBody:'HTML, CSS et JavaScript uniquement — sans framework, sans dépendance, sans build. Charge en millisecondes.',
+    techAudioTitle:'Web Audio API.', techAudioBody:'Cinq sons doux synthétisés en temps réel — aucun fichier audio.',
+    techStorageTitle:'localStorage.', techStorageBody:'Toutes vos notes et réglages restent sur votre appareil. Rien ne sort jamais.',
+    techGlassTitle:'Verre dépoli.', techGlassBody:'Un vrai flou backdrop-filter avec transparence multicouche pour la profondeur.',
+    techI18nTitle:'i18n personnalisé.', techI18nBody:'Cinq langues avec bascule RTL automatique — dans un seul petit bundle.',
+    techPointerTitle:'Pointer Events.', techPointerBody:'Entrée unifiée tactile, souris et stylet pour appui long, glissement et pincement.',
+    animTitle:'Animations', animBadge:'Système de mouvement',
+    animSpringTitle:'Physique ressort.', animSpringBody:'Courbes cubic-bezier sur mesure qui dépassent naturellement, comme iOS et Telegram.',
+    animViewTitle:'Transitions de vue.', animViewBody:'Les pages glissent, floutent et s\'effacent simultanément.',
+    animCardTitle:'Chorégraphie des cartes.', animCardBody:'Les notes arrivent en cascade avec un léger décalage.',
+    animDockTitle:'Ressort de pilule.', animDockBody:'Le surligneur glisse entre les onglets avec rebond et morphing de largeur.',
+    animBlurTitle:'Flou de mouvement.', animBlurBody:'Les transitions ajoutent un flou doux qui se dissipe — le mouvement paraît physique.',
+    animPinTitle:'Épingler & sélectionner.', animPinBody:'L\'appui long révèle un menu à ressort ; la sélection réduit les cartes avec un halo flou.',
+    animOrbsTitle:'Orbes flottants.', animOrbsBody:'Trois orbes flous dérivent lentement en arrière-plan.',
+    perfTitle:'Performance', perfBadge:'Fluide à 60fps',
+    perfGpuTitle:'Couches GPU.', perfGpuBody:'Toutes les animations utilisent transform et opacity uniquement.',
+    perfContainTitle:'Containment CSS.', perfContainBody:'Chaque carte est isolée — le navigateur ne redessine que ce qui change.',
+    perfPassiveTitle:'Événements passifs.', perfPassiveBody:'Les écouteurs tactiles ne bloquent jamais le thread principal.',
+    perfDebounceTitle:'Travail anti-rebond.', perfDebounceBody:'Recherche, redimensionnement et réglages limitent leurs mises à jour.',
+    perfCvTitle:'Visibilité du contenu.', perfCvBody:'Les cartes hors écran suspendent leur rendu.',
+    perfReducedTitle:'Mouvement réduit.', perfReducedBody:'Respecte la préférence système et désactive les animations lourdes.',
     aboutFoot:'Fait avec ♥ et beaucoup de verre.',
     navHome:'Accueil', navSearch:'Rechercher', navTrash:'Corbeille', navSettings:'Réglages', navAbout:'À propos',
     editing:'Édition', formatTitle:'Format', tbAbove:'Haut', tbLines:'Lignes', tbList:'Liste', tbClear:'Effacer',
@@ -1426,7 +1598,30 @@ var TRANSLATIONS = {
     u5Title:'Radio por defecto 40px.', u5Body:'Formas más suaves en todo.',
     u6Title:'Sección Mi trabajo.', u6Body:'Tarjetas bonitas para los otros proyectos.',
     u7Title:'Protección del sitio.', u7Body:'Límite de intentos de inicio.',
+    u8Title:'Dock pixel-perfect.', u8Body:'El resaltador ahora se alinea al sub-píxel en cada teléfono.',
     creditsTitle:'Créditos', creditOnly:'Escribió el código — cada línea.', creditElysia:'La dueña de las ideas.',
+    techTitle:'Tecnología', techBadge:'Construido con',
+    techVanillaTitle:'JS puro.', techVanillaBody:'Solo HTML, CSS y JavaScript — sin frameworks, sin dependencias, sin build. Carga en milisegundos.',
+    techAudioTitle:'Web Audio API.', techAudioBody:'Cinco sonidos suaves sintetizados en tiempo real — sin archivos de audio.',
+    techStorageTitle:'localStorage.', techStorageBody:'Todas tus notas y ajustes se quedan en tu dispositivo.',
+    techGlassTitle:'Cristal esmerilado.', techGlassBody:'Desenfoque backdrop-filter real con transparencia multicapa.',
+    techI18nTitle:'i18n personalizado.', techI18nBody:'Cinco idiomas con cambio RTL automático — en un solo paquete pequeño.',
+    techPointerTitle:'Pointer Events.', techPointerBody:'Entrada unificada táctil, ratón y lápiz para pulsación larga, deslizamiento y pinza.',
+    animTitle:'Animaciones', animBadge:'Sistema de movimiento',
+    animSpringTitle:'Física de resorte.', animSpringBody:'Curvas cubic-bezier personalizadas que rebotan naturalmente, como iOS y Telegram.',
+    animViewTitle:'Transiciones de vista.', animViewBody:'Las páginas deslizan, difuminan y se desvanecen a la vez.',
+    animCardTitle:'Coreografía de tarjetas.', animCardBody:'Las notas entran en cascada con un ligero retraso.',
+    animDockTitle:'Resorte del dock.', animDockBody:'El resaltador se desliza entre pestañas con rebote y morphing de ancho.',
+    animBlurTitle:'Desenfoque de movimiento.', animBlurBody:'Las transiciones añaden un desenfoque suave que se disuelve.',
+    animPinTitle:'Fijar y seleccionar.', animPinBody:'La pulsación larga muestra un menú con resorte; la selección encoge las tarjetas con un halo.',
+    animOrbsTitle:'Orbes flotantes.', animOrbsBody:'Tres orbes difusos derivan lentamente en el fondo.',
+    perfTitle:'Rendimiento', perfBadge:'Fluido a 60fps',
+    perfGpuTitle:'Capas GPU.', perfGpuBody:'Todas las animaciones usan solo transform y opacity.',
+    perfContainTitle:'Contención CSS.', perfContainBody:'Cada tarjeta está aislada — el navegador solo redibuja lo que cambia.',
+    perfPassiveTitle:'Eventos pasivos.', perfPassiveBody:'Los listeners táctiles nunca bloquean el hilo principal.',
+    perfDebounceTitle:'Trabajo con debounce.', perfDebounceBody:'Búsqueda, redimensionado y ajustes limitan sus actualizaciones.',
+    perfCvTitle:'Visibilidad del contenido.', perfCvBody:'Las tarjetas fuera de pantalla pausan su renderizado.',
+    perfReducedTitle:'Movimiento reducido.', perfReducedBody:'Respeta la preferencia del sistema y desactiva las animaciones pesadas.',
     aboutFoot:'Hecho con ♥ y mucho cristal.',
     navHome:'Inicio', navSearch:'Buscar', navTrash:'Papelera', navSettings:'Ajustes', navAbout:'Acerca de',
     editing:'Editando', formatTitle:'Formato', tbAbove:'Arriba', tbLines:'Líneas', tbList:'Lista', tbClear:'Limpiar',
@@ -1482,7 +1677,30 @@ var TRANSLATIONS = {
     u5Title:'默认圆角 40px。', u5Body:'处处更柔和、更平静的形状。',
     u6Title:'我的作品区。', u6Body:'为其他项目准备的精美卡片。',
     u7Title:'网站保护。', u7Body:'登录速率限制。',
+    u8Title:'像素级导航栏。', u8Body:'高亮指示器现在在每个手机上都能对齐到亚像素。',
     creditsTitle:'致谢', creditOnly:'编写了代码 — 每一行。', creditElysia:'网站背后想法的拥有者。',
+    techTitle:'技术', techBadge:'构建于',
+    techVanillaTitle:'原生 JavaScript。', techVanillaBody:'纯 HTML、CSS 和 JavaScript — 无框架、无依赖、无构建步骤。毫秒级加载。',
+    techAudioTitle:'Web Audio API。', techAudioBody:'五个实时合成的柔和音效 — 无需音频文件。',
+    techStorageTitle:'localStorage。', techStorageBody:'所有笔记和设置都留在你的设备上，永不离开。',
+    techGlassTitle:'磨砂玻璃。', techGlassBody:'真正的 backdrop-filter 模糊与多层透明，营造层次与宁静。',
+    techI18nTitle:'自研 i18n。', techI18nBody:'五种语言自动切换 RTL — 全部打包在一个小文件里。',
+    techPointerTitle:'Pointer Events。', techPointerBody:'统一触摸、鼠标和触控笔输入，支持长按、滑动和捏合手势。',
+    animTitle:'动画', animBadge:'动效系统',
+    animSpringTitle:'弹簧物理。', animSpringBody:'自定义 cubic-bezier 曲线自然回弹，如同 iOS 和 Telegram。',
+    animViewTitle:'页面过渡。', animViewBody:'页面同时滑动、模糊和淡出，营造柔和电影感。',
+    animCardTitle:'卡片编排。', animCardBody:'笔记以细腻的错峰延迟依次出现。',
+    animDockTitle:'导航弹簧。', animDockBody:'高亮在标签间以弹簧过冲和宽度变形滑动。',
+    animBlurTitle:'运动模糊。', animBlurBody:'过渡添加柔和模糊并消散 — 动效感觉是物理的。',
+    animPinTitle:'固定与选择。', animPinBody:'长按显示弹簧弹窗菜单；选择时卡片缩小并带柔和光晕。',
+    animOrbsTitle:'漂浮光球。', animOrbsBody:'三个模糊的彩色光球在背景缓慢漂移。',
+    perfTitle:'性能', perfBadge:'60fps 流畅',
+    perfGpuTitle:'GPU 图层。', perfGpuBody:'所有动画只使用 transform 和 opacity — 从不触发布局或重绘。',
+    perfContainTitle:'CSS 隔离。', perfContainBody:'每张卡片互相隔离，浏览器只重绘变化的部分。',
+    perfPassiveTitle:'被动事件。', perfPassiveBody:'触摸和滚动监听器从不阻塞主线程。',
+    perfDebounceTitle:'防抖处理。', perfDebounceBody:'搜索、调整大小和设置都智能节流更新。',
+    perfCvTitle:'内容可见性。', perfCvBody:'屏幕外的笔记卡片暂停渲染 — 长列表保持快速。',
+    perfReducedTitle:'减少动效。', perfReducedBody:'尊重系统偏好，在需要时禁用重动画。',
     aboutFoot:'用 ♥ 和大量玻璃制成。',
     navHome:'首页', navSearch:'搜索', navTrash:'回收站', navSettings:'设置', navAbout:'关于',
     editing:'编辑中', formatTitle:'格式', tbAbove:'上方', tbLines:'横线', tbList:'列表', tbClear:'清除',
@@ -2131,17 +2349,35 @@ function switchView(name){
   if (name === 'settings') renderSettings();
 }
 function positionDockPill(instant){
-  var btn = $('.dock button.active'); var pill = $('#dockPill');
-  if (!btn || !pill) return;
+  var dock = document.getElementById('dock');
+  var pill = document.getElementById('dockPill');
+  if (!dock || !pill) return;
+  var btn = dock.querySelector('button.active');
+  if (!btn) return;
+
+  var dRect = dock.getBoundingClientRect();
+  var bRect = btn.getBoundingClientRect();
+
+  // pill له left:0 في CSS، أي ملتصق بالحافة الداخلية للـ border
+  // getBoundingClientRect يرجع border box، لذا نطرح عرض الـ border
+  var borderLeft = dock.clientLeft || 0;
+  var offsetX = bRect.left - dRect.left - borderLeft;
+  var width   = bRect.width;
+
+  // حماية ضد القياسات الصفرية (قبل اكتمال layout)
+  if (!width || width < 1) return;
+
+  if (instant) pill.style.transition = 'none';
+
+  pill.style.width = width + 'px';
+  pill.style.transform = 'translate3d(' + offsetX + 'px,0,0)';
+
   if (instant){
-    pill.style.transition = 'none';
-    pill.style.width = btn.offsetWidth + 'px';
-    pill.style.transform = 'translateX(' + btn.offsetLeft + 'px)';
-    requestAnimationFrame(function(){ requestAnimationFrame(function(){ pill.style.transition = ''; }); });
-    return;
+    void pill.offsetWidth;
+    requestAnimationFrame(function(){
+      requestAnimationFrame(function(){ pill.style.transition = ''; });
+    });
   }
-  pill.style.width = btn.offsetWidth + 'px';
-  pill.style.transform = 'translateX(' + btn.offsetLeft + 'px)';
 }
 
 function activeNotes(){ return state.notes.filter(function(n){ return !n.deleted; }); }
@@ -2986,8 +3222,40 @@ function init(){
     $$('.dock button').forEach(function(b){
       b.addEventListener('click', function(){ playSound('tap'); switchView(b.dataset.view); });
     });
-    window.addEventListener('resize', debounce(function(){ positionDockPill(true); positionTabPill(); }, 120));
-    window.addEventListener('orientationchange', function(){ setTimeout(function(){ positionDockPill(true); positionTabPill(); }, 250); });
+
+    // === مراقبة تلقائية لضبط المستطيل السفلي بدقة على كل الأجهزة ===
+    (function watchDock(){
+      var dock = document.getElementById('dock');
+      if (!dock) return;
+
+      if (window.ResizeObserver){
+        try {
+          var ro = new ResizeObserver(function(){ positionDockPill(true); });
+          ro.observe(dock);
+        } catch(e){}
+      }
+
+      if (document.fonts && document.fonts.ready){
+        document.fonts.ready.then(function(){
+          setTimeout(function(){ positionDockPill(true); }, 60);
+        });
+      }
+
+      window.addEventListener('load', function(){
+        setTimeout(function(){ positionDockPill(true); }, 100);
+      });
+
+      document.addEventListener('visibilitychange', function(){
+        if (!document.hidden) setTimeout(function(){ positionDockPill(true); }, 80);
+      });
+
+      dock.addEventListener('transitionend', function(e){
+        if (e.propertyName === 'transform') positionDockPill(true);
+      });
+    })();
+
+    window.addEventListener('resize', debounce(function(){ positionDockPill(true); positionTabPill(); }, 100));
+    window.addEventListener('orientationchange', function(){ setTimeout(function(){ positionDockPill(true); positionTabPill(); }, 300); });
 
     var nn = $('#newNoteBtn');
     if (nn) nn.addEventListener('click', function(){ if (!requireAuth('create notes')) return; playSound('open'); openEditor(null); });
